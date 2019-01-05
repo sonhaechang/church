@@ -1,0 +1,366 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}
+  <link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
+    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+
+      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
+        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      </div>
+
+      <!-- col-xs-4 col-sm-2 -->
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>참여마당</h3>
+          <a href="{% url 'picture:picture_list' %}" class="list-group-item active">우리들 사진</a>
+          <a href="{ % url 'post:father_sister' %}" class="list-group-item">우리들 영상</a>
+          <a href="{% url 'QnA:QnA_list' %}" class="list-group-item">묻고 답하기</a>
+          <a href="{% url 'freeboard:freeboard_list' %}" class="list-group-item">자유게시판</a>
+        </div>
+      </div>
+
+      <div class="col-md-10" id="content">
+
+        <h3>{{ picture.title }}</h3>
+
+        <hr style="margin-bottom:10px;">
+        <span style="margin-left:10px;">
+          <i class="fas fa-user"></i>
+          <strong>{{ picture.user.last_name }}{{ picture.user.first_name }}</strong>
+        </span>
+
+        <span style="margin-left:20px;">
+          <small>
+            <i class="far fa-comments"></i>
+            {{ comment_count }}
+          </small>
+        </span>
+
+        {% if picture.user == request.user %}
+          <span class="dropdown pull-right" style="margin-right:20px; cursor:pointer;">
+            <!-- <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
+              <span class="fas fa-cog" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"></span>
+              <!-- <span class="caret"></span>
+            </button> -->
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="background-color: #fff;">
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="{% url 'picture:picture_edit' picture.pk %}">
+                  <button class="btn btn-default" style="border:none; width:100%;">수정</button>
+                </a>
+              </li>
+              <li role="presentation">
+                <a role="menuitem" tabindex="-1">
+                  <form action="{% url 'picture:picture_delete' picture.pk %}" method="post" role="menuitem" tabindex="-1">
+                    {% csrf_token %}
+                    <input type="submit" value="삭제" class="btn btn-default" onclick="return confirm('정말 삭제하시겠습니까?');" style="border:none; width:100%;">
+                  </form>
+                </a>
+              </li>
+            </ul>
+          </span>
+        {% endif %}
+
+        <span class="pull-right" style="margin-right:10px;">
+          <small>
+            <span class="glyphicon glyphicon-time"></span>
+            {{ picture.updated_at }}
+          </small>
+        </span>
+        <span class="pull-right" style="margin-right:20px;">
+          <small>
+            <span class="glyphicon glyphicon-eye-open"></span>
+            {{ picture.hits }}
+          </small>
+        </span>
+
+        <hr style="margin-top:10px;">
+
+        <a href="{% url 'picture:picture_list' %}" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+          목록
+        </a>
+
+        <p class="other_posts pull-right">
+          {% if picture.get_previous_by_updated_at %}
+            <a href="{{ picture.get_previous_post.get_absolute_url }}" title="View previous weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+              <!-- &laquo;{{ weekly.get_previous_post }} -->
+              이전글
+            </a>
+          {% endif %}
+
+          {% if picture.get_next_by_updated_at %}
+            <a href="{{ picture.get_next_post.get_absolute_url }}" title="View next weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+              <!-- {{ weekly.get_next_post }}&raquo; -->
+              다음글
+            </a>
+          {% endif %}
+        </p>
+
+        <div style="margin-top:70px;">
+
+          <!-- {% for p in picture.photo_set.all %}
+            <img src="{{ p.photo.url }}" style="width: 100%;"/>
+          {% endfor %} -->
+
+          {{ picture.content|safe }}
+
+          <br>
+          <br>
+
+          <a href="{% url 'picture:picture_list' %}" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">목록</a>
+
+          <p class="other_posts pull-right">
+            {% if picture.get_previous_by_updated_at %}
+              <a href="{{ picture.get_previous_post.get_absolute_url }}" title="View previous weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+                이전글
+              </a>
+            {% endif %}
+
+            {% if picture.get_next_by_updated_at %}
+              <a href="{{ picture.get_next_post.get_absolute_url }}" title="View next weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+                다음글
+              </a>
+            {% endif %}
+          </p>
+
+          <hr>
+          <br>
+        </div>
+
+        <h3>
+          댓글 <i class="far fa-comments"></i>
+        </h3>
+
+        {% if user.is_authenticated %}
+        <table class="table table-hover" id="add-comment-{{ picture.pk }}">
+          <tr>
+            <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
+            <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-comment" value="{{ picture.pk }}" style="height:75px; width:75px;">댓글작성</button></td>
+          </tr>
+        </table>
+        {% endif %}
+
+        {% if picture.picturecomment_set.all %}
+          {% for comment in comments %}
+            <table class="table table-hover">
+              <tr>
+                <td>
+                <p style="margin-left:20px;">
+                  <i class="fas fa-user"></i>
+                  <strong>{{ comment.user.last_name }}{{ comment.user.first_name }}</strong>
+                  <small style="margin-left:10px; cursor:pointer;">
+                    <span class="replies-btn glyphicon glyphicon-share-alt" style="color:#555;"></span>
+                    <span class="replies-btn replies-btn-{{ comment.pk }}" name="{{ comment.pk }}">답글</span>
+                    <span class="text-danger replies-delete replies-delete-{{ comment.pk }}" name="{{ comment.pk }}" style="display:none;">답글 닫기</span>
+                  </small>
+                  <small class="pull-right" style="margin-right:20px;">
+                    <span class="glyphicon glyphicon-time"></span>
+                    {{ comment.updated_at }}
+                  </small>
+                </p>
+                <p style="margin-left:20px;">
+                  {{ comment.comment }}
+                  {% if comment.user == request.user %}
+                    <a href="{{ comment.get_delete_url }}"
+                      style="margin-right:20px;"
+                      class="pull-right text-danger ajax-post-confirm"
+                      data-target-id="comment-{{ comment.pk }}"
+                      data-message="삭제하시겠습니까?">
+                        <small>삭제</small>
+                    </a>
+
+                    <div class="replies-form-{{ comment.pk }}" id="add-replies-{{ comment.pk }}" style="display:none;">
+                      <table class="table table-hover">
+                        <tr>
+                          <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
+                          <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-replies" value="{{ picture.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
+                        </tr>
+                      </table>
+                    </div>
+
+                    <div id="replies-list-{{ comment.pk }}">
+                      {% for replay in comment.replies.all %}
+                        <span class="replies">
+                          <p style="margin-left:40px; margin-top:20px;">
+                            L
+                            <i class="fas fa-user"></i>
+                            <strong>{{ replay.user.last_name }}{{ replay.user.first_name }}</strong>
+                            <small class="pull-right" style="margin-right:40px;">
+                              <span class="glyphicon glyphicon-time"></span>
+                              {{ replay.updated_at }}
+                            </small>
+                          </p>
+                          <p style="margin-left:55px;">
+                            {{ replay.comment }}
+                            {% if replay.user == request.user %}
+                              <a href="{{ replay.get_delete_url }}"
+                              style="margin-right:40px;"
+                              class="pull-right text-danger ajax-post-confirm2"
+                              data-target-id="comment-{{ replay.pk }}"
+                              data-message="삭제하시겠습니까?">
+                                <small>삭제</small>
+                              </a>
+                            {% endif %}
+                          </p>
+                        </span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </p>
+                </td>
+              </tr>
+            </table>
+          {% endfor %}
+        {% else %}
+          <hr>
+          <p style="text-align: center;">
+            <i class="fas fa-exclamation-circle"></i>
+            등록된 댓글이 없습니다.
+          </p>
+          <hr>
+        {% endif %}
+
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_body %}
+  <script>
+    // onClick="location.href='http://www.daum.net/'" style="cursor:pointer;"
+    $(function() {
+      $(document).on('click', '.ajax-post-confirm', function(e) {
+        e.preventDefault();
+        var content = $(this).parents().closest('table')
+        var url = $(this).attr('href');
+        var target_id = $(this).data('target-id');
+        var message = $(this).data('message');
+
+        if ( confirm(message) ) {
+          $.post(url)
+            .done(function() {
+              $('#' + target_id).remove();
+              $(content).remove();
+            })
+            .fail(function(xhr, textStatus, errer) {
+              alert('failed : ' + errer);
+            });
+        }
+      });
+    });
+
+    $(function() {
+      $(document).on('click', '.ajax-post-confirm2', function(e) {
+        e.preventDefault();
+        var content = $(this).parents().closest('span');
+        var url = $(this).attr('href');
+        var target_id = $(this).data('target-id');
+        var message = $(this).data('message');
+        console.log(content);
+
+        if ( confirm(message) ) {
+          $.post(url)
+            .done(function() {
+              $('#' + target_id).remove();
+              $(content).remove();
+              // location.reload();
+            })
+            .fail(function(xhr, textStatus, errer) {
+              alert('failed : ' + errer);
+            });
+        }
+      });
+    });
+
+    $(function() {
+      $(document).on('click', '.replies-btn', function(e) {
+        var pk = $(this).attr('name');
+
+        $( ".replies-form-"+pk ).show();
+        $( ".replies-delete-"+pk ).show();
+        $( ".replies-btn-"+pk ).hide();
+      });
+    });
+
+    $(function() {
+      $(document).on('click', '.replies-delete', function(e) {
+        var pk = $(this).attr('name');
+
+        $( ".replies-form-"+pk ).hide();
+        $( ".replies-delete-"+pk ).hide();
+        $( ".replies-btn-"+pk ).show();
+      });
+    });
+
+    $(document).on('click', '.add-comment', function(e) {
+    e.preventDefault();
+    var pk = $(this).attr("value");
+    var url = "{% url 'picture:comment_new' %}";
+    var comment = $("textarea#add-comment").val();
+    console.log(comment);
+    // alert(comment);
+    // alert(pk);
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {
+        'pk': pk,
+        'comment': comment,
+      },
+      dataType: "html",
+
+      success: function(data){
+        alert("댓글을 추가하였습니다.");
+        $(".comment").val("");
+        $("#comment-list-"+pk).prepend(data);
+        location.reload();
+      }
+    })
+  });
+
+  $(document).on('click', '.add-replies', function(e) {
+    e.preventDefault();
+    var pk = $(this).attr("value");
+    var parent_id = $(this).attr("name");
+    var url = "{% url 'picture:comment_new' %}";
+    var comment = $(this).closest('tr').children('td:first').find("#add-comment").val();
+    console.log(comment);
+    console.log(parent_id);
+    // alert(comment);
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {
+        'pk': pk,
+        'comment': comment,
+        'parent_id': parent_id,
+      },
+      dataType: "html",
+
+      success: function(data){
+        // alert(data);
+        alert("댓글을 추가하였습니다.");
+        $(".comment").val("");
+        // $("#replies-list-"+parent_id).prepend(data);
+        $( ".replies-form-"+parent_id ).hide();
+        $( ".replies-delete-"+parent_id ).hide();
+        $( ".replies-btn-"+parent_id ).show();
+        location.reload();
+      }
+    })
+  });
+  </script>
+{% endblock %}

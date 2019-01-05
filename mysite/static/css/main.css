@@ -1,0 +1,120 @@
+/* .navbar-wrapper li.dropdown {
+  margin-left:130px;
+} */
+.header ul {
+  list-style:none;
+  padding-left:0px;
+  margin-left:900px;
+  margin-top: 30px;
+}
+
+.logo {
+  padding-left: 30px;
+}
+
+.header ul a {
+  color: #8C8C8C;
+}
+
+#navbar {
+  /* overflow: hidden; */
+  background-color: #7a0039;
+  z-index: 1000000000;
+}
+
+#navbar li.dropdown {
+  margin-left:110px;
+}
+
+/* .navbar-wrapper li.dropdown .dropdown-toggle {
+  color: #FFFFFF;
+} */
+
+#navbar li.dropdown .dropdown-toggle {
+  color: #FFFFFF;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    /* background-color: #fff; */
+    background-color: #34343a;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+/* .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    color: #FFFFFF;
+    background-color: #555;
+} */
+
+/* background-color: #e7e7e7; */
+.navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hover {
+    color: #FFFFFF;
+    background-color: #555;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+  color: #FFFFFF;
+  background-color: #7a0039;
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    /* color: #333; */
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    /* background-color: #eee;
+    border-color: #337ab7; */
+    color: #FFFFFF;
+    /* background-color: #e7e7e7; */
+    background-color: #555;
+
+}
+
+#move-top-btn {
+    position: fixed;
+    right: 2%;
+    bottom: 50px;
+    display: none;
+    width:35px;
+    height:35px;
+    text-align: center;
+    background-color: #4C4C4C;
+    border-radius: 50%;
+    z-index: 10000000000;
+}
+
+
+#content {
+  padding-left: 30px;
+  padding-right: 0px;
+}

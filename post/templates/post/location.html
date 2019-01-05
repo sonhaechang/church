@@ -1,0 +1,76 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}<link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+
+  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
+    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+
+      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
+        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      </div>
+
+      <!-- col-xs-4 col-sm-2 -->
+      <!-- <div class="panel panel-default col-md-2" style="border:none; padding-left:0px;">
+        <div class="panel-heading" style="width:100%; background:#7a0039;">
+          <h3 class="panel-title" style="color:white">본당소개</h3>
+        </div>
+        <div class="list-group" style="width:100%">
+          <a href="{% url 'post:church_info' %}" class="list-group-item">본당소개</a>
+          <a href="{% url 'post:father_sister' %}" class="list-group-item">신부님/수녀님</a>
+          <a href="{% url 'post:location' %}" class="list-group-item active">오시는길</a>
+        </div>
+      </div> -->
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>본당소개</h3>
+          <a href="{% url 'post:church_info' %}" class="list-group-item">본당소개</a>
+          <a href="{% url 'post:father_sister' %}" class="list-group-item">신부님/수녀님</a>
+          <a href="{% url 'post:location' %}" class="list-group-item active">오시는길</a>
+        </div>
+      </div>
+
+
+        <!--/.sidebar-offcanvas-->
+
+      <div class="col-md-10" id="content">
+        <h3>오시는길</h3>
+        <hr>
+        <div style="margin-top:70px;">
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <td>
+                <span style="margin-right:100px;"><strong>주소: </strong></span>
+                <span>서울특별시 강남구 삼성로71길 10</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="margin-right:75px;"><strong>전화번호: </strong></span>
+                  <span><a href="tel">02-3453-7810</a></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <p>
+          <strong>주소: </strong>서울특별시 강남구 삼성로71길 10 대치4동천주교 성당
+        </p>
+        <p>
+        <strong>전화번호: </strong>02-3453-7810
+        </p> -->
+        <!-- <img src="https://openapi.naver.com/v1/map/staticmap.bin?clientId={{ settings.NAVER_MAP_CLIENT_ID }}&url={{ request.scheme }}://{{ request.get_host }}&crs=EPSG:4326&center=127.058068,37.502347&level=12&w=1000&h=320&baselayer=default&markers=127.058068,37.502347" alt=""> -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1507.6643317666992!2d127.05690552220011!3d37.5022710553898!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca4171b69670d%3A0x133ed7678ad6ace3!2z7LKc7KO86rWQIOuMgOy5mDTrj5kg7ISx64u5!5e0!3m2!1sko!2skr!4v1537785452463" width="100%" height="320" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

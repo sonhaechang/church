@@ -1,0 +1,310 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/fullcalendar.min.js' %}"></script>
+    <script src="{% static 'js/locale-all.js' %}"></script>
+    <script src="{% static 'js/ko.js' %}"></script>
+    <script src="{% static 'js/jquery.csrf.js' %}"></script>
+
+
+    <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
+    <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sticky-footers.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fullcalendar.print.css' %}" rel="stylesheet" media='print'>
+    <link href="{% static 'css/fullcalendar/fullcalendar.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fullcalendar/fullcalendar.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/comment.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+
+    {% block css %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <!-- <div class="navbar-wrapper" style="margin-top:0px;">
+      <div class="container">
+        <nav class="navbar navbar-default navbar-fixed-top" style="height: 80px; border-color: #FFFFFF;">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'post:main_page' %}" style="padding-top: 3px; margin-left: 10px;"><img src="{% static 'img/logo.png' %}" alt="" style="width: 166px; height: 75px;"></a>
+
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right" style="margin-top: 15px; margin-right: 20px;">
+                {% if not user.is_authenticated %}
+                  <li><a href="{% url "login" %}?next={{ request.path }}" >로그인</a></li>
+                {% else %}
+                  <li><a href="{% url "profile" %}">{{ request.user.last_name }}{{ request.user.first_name }} 님</a></li>
+                  <li><a href="{% url "logout" %}?next={{ request.path }}">로그아웃</a></li>
+              {% endif %}
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div> -->
+      <div class="header" style="display: inline-block;">
+        <a class="logo" href="{% url 'post:main_page' %}" style="padding-top: 3px; margin-left: 10px; float:left;"><img src="{% static 'img/logo.png' %}" alt="" style="width: 166px; height: 75px;"></a>
+        <ul style="float:left">
+          {% if not user.is_authenticated %}
+            <li style="float:left;">
+              <a href="{% url "login" %}?next={{ request.path }}" >
+                <i class="fas fa-user-plus"></i>
+                로그인
+              </a>
+            </li>
+          {% else %}
+            <!-- <li style="float:left; margin-right:30px;">
+              <a href="{% url "profile" %}">
+                <i class="fas fa-user"></i>
+                {{ request.user.last_name }}{{ request.user.first_name }} 님
+              </a>
+            </li> -->
+            <!-- <li style="float:left;">
+              <a href="{% url "logout" %}?next={{ request.path }}">
+                로그아웃
+              </a>
+            </li> -->
+
+            <div style="float:left;" class="dropdown">
+
+              <button class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" type="button" aria-expanded="true" style="border:none;">
+                <i class="fas fa-user"></i>
+                {{ request.user.last_name }}{{ request.user.first_name }} 님
+                <!-- <img src="{% static 'img/profile.png' %}" alt="" style="width:35px; height:35px; border-radius:20px;"> -->
+              </button>
+              <!-- <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> -->
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  <li class="dropdown-item"><a role="menuitem" tabindex="-1" href="{% url "profile" %}">프로필 수정</a></li>
+                  <li class="dropdown-item"><a role="menuitem" tabindex="-1" href="{% url "logout" %}?next={{ request.path }}">로그아웃</a></li>
+                </ul>
+              <!-- </div> -->
+
+            </div>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="navbar" id="navbar">
+        <!-- <nav class="navbar"> -->
+
+          <ul class="nav navbar-nav">
+            <li class="dropdown"><a href="{% url 'post:main_page' %}" style='color:white'>HOME</a></li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소개 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
+                <li><a href="{% url 'post:father_sister' %}">신부님/수녀님</a></li>
+                <li><a href="{% url 'post:location' %}">오시는길</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'post:pastoral_counsil' %}">사목협의회</a></li>
+                <li><a href="#">?게시판(일정표)</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소식 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'notice:notice_list' %}">공지사항</a></li>
+                <li><a href="{% url 'weekly:weekly_list' %}">본당주보</a></li>
+                <li><a href="{% url 'schedule:schedule' %}">본당일정</a></li>
+                <li><a href="{% url 'gallery:gallery_list' %}">행사사진</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">참여마당 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'picture:picture_list' %}">우리들 사진</a></li>
+                <li><a href="{% url 'video:video_list' %}">우리들 영상</a></li>
+                <li><a href="{% url 'QnA:QnA_list' %}">묻고 답하기</a></li>
+                <li><a href="{% url 'freeboard:freeboard_list' %}">자유게시판</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">가톨릭소개 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="http://info.catholic.or.kr/missa/" target="_blank">매일미사</a></li>
+                <li><a href="http://aos.catholic.or.kr/" target="_blank">서울 대교구</a></li>
+              </ul>
+            </li>
+          </ul>
+        <!-- </nav> -->
+      </div>
+
+    <!-- <div id="navbar" class="navbar-wrapper">
+      <div>
+        <nav class="navbar navbar-defaul navbar-invers" style="background: #7a0039; border-color: #7a0039;">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+            </div>
+            <div  class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#" style='color:white'>Home</a></li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소개</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
+                    <li><a href="{% url 'post:father_sister' %}">신부님/수녀님</a></li>
+                    <li><a href="{% url 'post:location' %}">오시는길</a></li>
+                  </ul>
+                </li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">사목회</a></li>
+                  </ul>
+                </li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소식</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'notice:notice_list' %}">공지사항</a></li>
+                    <li><a href="{% url 'weekly:weekly_list' %}">본당주보</a></li>
+                    <li><a href="{% url 'schedule:schedule' %}">본당일정</a></li>
+                    <li><a href="{% url 'gallery:gallery_list' %}">행사사진</a></li>
+                  </ul>
+                </li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">참여마당</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                  </ul>
+                </li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">가톨릭소개</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://info.catholic.or.kr/missa/" target="_blank">매일미사</a></li>
+                  </ul>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div> -->
+
+    {% if messages %}
+      <div class="container">
+        <div class="row">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              [{{ message.tags }}]
+              {{ message.message }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div style="margin-top:-20px; margin-bottom: 20px;">
+      <!-- margin-top:120px; -->
+      <!-- <div class="row"> -->
+        {% block content %}
+        {% endblock %}
+      <!-- </div> -->
+      <button id="move-top-btn">
+        <span class="glyphicon glyphicon-menu-up" style="color:#ffffff;"></span>
+      </button>
+    </div>
+
+    <footer class="footer" style="height: 100px;">
+      <div class="container">
+        <div style="margin-top: 25px;">
+          <p class="text-muted" ><strong style="color: #938062">천주교서울대교구 대치4동성당</strong> | 주소 : 서울특별시 강남구 삼성로71길 10 대치4동천주교 성당 | T. 02-3453-7810</p>
+          <p class="text-muted">Copyright © 천주교서울대교구 대치4동성당. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.onscroll = function() {myFunction()};
+
+      var navbar = document.getElementById("navbar");
+      var sticky = navbar.offsetTop;
+
+      function myFunction() {
+        if (window.pageYOffset >= sticky) {
+          navbar.classList.add("sticky")
+        } else {
+          navbar.classList.remove("sticky");
+        }
+      }
+
+      $(function() {
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 100) {
+                $('#move-top-btn').fadeIn();
+            } else {
+                $('#move-top-btn').fadeOut();
+            }
+        });
+
+        $("#move-top-btn").click(function() {
+            $('html, body').animate({
+                scrollTop : 0
+            }, 400);
+            return false;
+        });
+      });
+
+      $(document).ready(function(){
+
+        $('.dropdown,.dropdown-menu').hover(function(){
+
+          if($(window).width()>=768){
+            $(this).addClass('open').trigger('shown.bs.dropdown', relatedTarget)
+            return false;
+          }
+
+        },function(){
+          if($(window).width()>=768){
+            $(this).removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
+            return false;
+          }
+        })
+
+      })
+    </script>
+    {% block extra_body %}
+    {% endblock %}
+  </body>
+</html>

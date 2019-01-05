@@ -1,0 +1,123 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}
+  <link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
+    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+
+      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
+        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      </div>
+
+      <!-- col-xs-4 col-sm-2 -->
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <!-- <a class="list-group-item" style="background:#7a0039; border:#7a0039; color:white;">본당소식</a> -->
+          <h3>본당소식</h3>
+          <a href="{% url 'notice:notice_list' %}" class="list-group-item">공지사항</a>
+          <a href="{% url 'weekly:weekly_list' %}" class="list-group-item">본당주보</a>
+          <a href="{% url 'schedule:schedule' %}" class="list-group-item active">본당일정</a>
+          <a href="{% url 'gallery:gallery_list' %}" class="list-group-item">행사사진</a>
+        </div>
+      </div>
+      <!--/.sidebar-offcanvas-->
+      <!-- <div class="col-md-1">
+      </div> -->
+
+      <div class="col-md-10" id="content">
+
+        <h3>본당일정</h3>
+        <hr>
+
+        <div style="margin-top:70px;">
+
+          <div id="calendar" style="float: center;">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+
+  // $('#calendar').fullCalendar({
+  //   defaultView: 'month',
+  //   lang : 'ko',
+  //   events: [
+  //     {
+  //       title: '군인주일 2차헌금',
+  //       start: '2018-10-07',
+  //       end: '2018-10-07'
+  //     },
+  //     {
+  //       title: '본당의날 성지순례',
+  //       start: '2018-10-14',
+  //       end: '2018-10-14'
+  //     },
+  //     {
+  //       title: '세례식',
+  //       start: '2018-10-21',
+  //       end: '2018-10-21'
+  //     }
+  //   ]
+  // });
+
+  $('#calendar').fullCalendar({
+    header: {
+      left: "",
+      center: "title"
+    },
+    defaultView: 'month',
+    lang : 'ko',
+    events: function(start, end, timezone, callback) {
+      $.ajax({
+          url: "{% url 'schedule:schedule_ajax' %}",
+          type : 'post',
+          data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+          // data : {EVENT_CODE : '11', LANG : lang_cd, startDate : start.format(), endDate : end.format() },
+          dataType: 'json',
+          success: function(data) {
+            var events = [];
+            for (var i=0; i<data.length; i++){
+              events.push({
+                title: data[i].title,
+                start: data[i].start,
+                end: data[i].end,
+              });
+            };
+            // $(data).each(function(index, item) {
+            //   events.push({
+            //     title: $(this).attr('title'),
+            //     start: $(this).attr('start'),
+            //     end: $(this).attr('end'),
+            //     // title: $(this).attr('title'),
+            //     // start: $(this).attr('start'),
+            //     // end: $(this).attr('end'),
+            //     // url: "/test/eventDetail.do?id="+$(this).attr('id')+"&amp;lang="+$(this).attr('lang')+"&amp;start="+$(this).attr('start')+"&amp;end="+$(this).attr('end'),
+            //     // lang : $(this).attr('lang')
+            //   });
+            // });
+            callback(events);
+          }
+      });
+
+    },
+  });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #7a0039;
+    border-color: #7a0039;
+    /* background-color: #555;
+    border-color: #555; */
+}
+
+#sidebar {
+  padding-left: 0px;
+  padding-right: 30px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+}

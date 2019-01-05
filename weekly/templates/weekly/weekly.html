@@ -1,0 +1,127 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}
+  <link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">
+  <link href="{% static 'css/pagination.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
+    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+
+      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
+        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      </div>
+
+      <!-- col-xs-4 col-sm-2 -->
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>본당소식</h3>
+          <!-- <a class="list-group-item" style="background:#7a0039; border:#7a0039; color:white;">본당소식</a> -->
+          <a href="{% url 'notice:notice_list' %}" class="list-group-item">공지사항</a>
+          <a href="{% url 'weekly:weekly_list' %}" class="list-group-item active">본당주보</a>
+          <a href="{% url 'schedule:schedule' %}" class="list-group-item">본당일정</a>
+          <a href="{% url 'gallery:gallery_list' %}" class="list-group-item">행사사진</a>
+        </div>
+      </div>
+        <!--/.sidebar-offcanvas-->
+
+      <div class="col-md-10" id="content">
+
+        <h3>본당주보</h3>
+        <hr>
+
+        <div class="input-group col-md-4">
+          <form action="" method="get">
+            {% csrf_token %}
+            <span class="input-group-btn">
+              <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
+            </span>
+            <span class="input-group-btn">
+              <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
+                  <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </span>
+          </form>
+        </div>
+
+        <div style="margin-top:70px;">
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th>날짜</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for weekly in weekly_list %}
+                <!-- style="cursor:pointer;" -->
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                    <a href="{% url 'weekly:weekly_detail' weekly.pk %}" class="view-counter">{{ weekly.title }}
+                      {% if weekly.weeklycomment_set.all %}
+                        <small class="text-danger">[{{ weekly.weeklycomment_set.count }}]</small>
+                      {% endif %}
+                    </a>
+                  </td>
+                  <td><small>{{ weekly.user }}</small></td>
+                  <td><small>{{ weekly.updated_at }}</small></td>
+                  <td>{{ weekly.hits }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {# Pagination #}
+
+            <nav class="text-center">
+              <ul class="pagination">
+                {% if weekly_list.has_previous %}
+  		            <li><a href="?page={{ weekly_list.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+  		            <li class = "disabled"><span>&laquo;</span></li>
+                {% endif %}
+
+    		        {% if weekly_list.number > 2  %}
+    		        	<li><a href="?page={{ 1 }}"> 1 </a></li>
+    		        	<li ><span>...<span class="sr-only">...</span></span></li>
+    		        {% endif %}
+    		        {% for i in page_range %}
+    		          {% if weekly_list.number == i %}
+    		            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    		          {% else %}
+    		            <li><a href="?page={{ i }}">{{ i }}</a></li>
+    		          {% endif %}
+  		          {% endfor %}
+
+    		        {% if rweekly_list.number < max_index %}
+    		      		<li ><span>...<span class="sr-only">...</span></span></li>
+    		        	<li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
+    		        {% endif %}
+
+    		        {% if weekly_list.has_next %}
+    		            <li><a href="?page={{ weekly_list.next_page_number }}">&raquo;</a></li>
+    		        {% else %}
+    		            <li class="disabled"><span>&raquo;</span></li>
+    		        {%endif %}
+              </ul>
+            </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

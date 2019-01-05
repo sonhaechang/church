@@ -1,0 +1,68 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}<link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+
+  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
+    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+  </div> -->
+
+  <div class="container">
+    <div class="row">
+
+      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
+        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      </div>
+
+      <!-- <div class="col-md-12">
+        <div style="float: left; line-height: 1.5;">
+          <ul style="padding-left:0px; font-size:43.5px;">
+            <li style="list-style:none;">월: 휴무</li>
+            <li style="list-style:none;">화: 오전 9시 ~ 오후 5시</li>
+            <li style="list-style:none;">수: 오전 9시 ~ 오후 5시</li>
+            <li style="list-style:none;">목: 오전 9시 ~ 오후 5시</li>
+            <li style="list-style:none;">금: 휴무</li>
+            <li style="list-style:none;">토: 오전 9시 ~ 오후 9시(첫주)</li>
+            <li style="list-style:none; margin-left:20px;"> 오후 2시 ~ 오후 9시</li>
+          </ul>
+        </div>
+        <div style="float: left; margin-left:10px; line-height: 1.5;">
+          <ul style="padding-left:35px; font-size:43.5px;">
+            <li style="list-style:none; color:orange;">주일: 오전 7시 ~ 오후 8시</li>
+            <li style="list-style:none; color:#ffffff">.</li>
+            <li style="list-style:none;">점심시간</li>
+            <li style="list-style:none;">평일: 오후 12시 30분 ~ 1시 30분</li>
+            <li style="list-style:none; color:orange;">주일: 오후 1시 ~ 2시</li>
+          </ul>
+        </div>
+      </div> -->
+
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>본당단체</h3>
+          <a href="{% url 'post:pastoral_counsil' %}" class="list-group-item active">사목협의회</a>
+          <a href="#" class="list-group-item">?게시판(일정표)</a>
+        </div>
+      </div>
+
+      <div class="col-md-10" id="content">
+
+        <h3>사목협의회</h3>
+        <hr>
+
+        <div style="margin-top:70px;">
+          <hr>
+          <img src="{% static 'img/organization_chart(ygothic130).png' %}" alt="" style="width:100%; height:600px;">
+          <hr>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

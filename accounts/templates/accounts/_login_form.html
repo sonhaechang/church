@@ -1,0 +1,33 @@
+{% load bootstrap3 %}
+
+<div class="text-center" style="margin-top: 20px;">
+  <h1 class="h3 col-mb-3 font-weight-normal">로그인</h1>
+</div>
+
+<hr/>
+
+<form action="" method="post">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+
+  <!-- <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me"> 자동로그인
+    </label>
+  </div> -->
+
+  <hr/>
+
+  <input type="submit" value="로그인" class="btn btn-block btn btn-default" />
+</form>
+
+<div style="margin-top: 5px;">
+  <!-- <a href="{ % provider_login_url 'facebook' %}" class="btn btn-block btn-social btn-facebook" style="color:white; background-color:#3b5998;text-align:center">
+    <span class="fa fa-facebook"></span>
+          Login with Facebook
+  </a> -->
+  <a href="#"></a>
+  <p style="margin-top: 5px;"><a href="{% url "signup" %}">회원가입</a> | <a href="{% url 'password_reset' %}">비밀번호 찾기</a></p>
+</div>
+
+<hr/>
