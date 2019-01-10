@@ -11,7 +11,7 @@ def freeboard_list(request):
 
     q = request.GET.get('q', '')
     if q:
-        fboard = Freeboard.filter(title__icontains=q)
+        fboard = fboard.filter(title__icontains=q)
 
     total_len = len(fboard)
 

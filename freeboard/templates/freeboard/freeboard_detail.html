@@ -148,29 +148,30 @@
             <table class="table table-hover">
               <tr>
                 <td>
-                <p style="margin-left:20px;">
-                  <i class="fas fa-user"></i>
-                  <strong>{{ comment.user.last_name }}{{ comment.user.first_name }}</strong>
-                  <small style="margin-left:10px; cursor:pointer;">
-                    <span class="replies-btn glyphicon glyphicon-share-alt" style="color:#555;"></span>
-                    <span class="replies-btn replies-btn-{{ comment.pk }}" name="{{ comment.pk }}">답글</span>
-                    <span class="text-danger replies-delete replies-delete-{{ comment.pk }}" name="{{ comment.pk }}" style="display:none;">답글 닫기</span>
-                  </small>
-                  <small class="pull-right" style="margin-right:20px;">
-                    <span class="glyphicon glyphicon-time"></span>
-                    {{ comment.updated_at }}
-                  </small>
-                </p>
-                <p style="margin-left:20px;">
-                  {{ comment.comment }}
-                  {% if comment.user == request.user %}
-                    <a href="{{ comment.get_delete_url }}"
-                      style="margin-right:20px;"
-                      class="pull-right text-danger ajax-post-confirm"
-                      data-target-id="comment-{{ comment.pk }}"
-                      data-message="삭제하시겠습니까?">
-                        <small>삭제</small>
-                    </a>
+                  <p style="margin-left:20px;">
+                    <i class="fas fa-user"></i>
+                    <strong>{{ comment.user.last_name }}{{ comment.user.first_name }}</strong>
+                    <small style="margin-left:10px; cursor:pointer;">
+                      <span class="replies-btn glyphicon glyphicon-share-alt" style="color:#555;"></span>
+                      <span class="replies-btn replies-btn-{{ comment.pk }}" name="{{ comment.pk }}">답글</span>
+                      <span class="text-danger replies-delete replies-delete-{{ comment.pk }}" name="{{ comment.pk }}" style="display:none;">답글 닫기</span>
+                    </small>
+                    <small class="pull-right" style="margin-right:20px;">
+                      <span class="glyphicon glyphicon-time"></span>
+                      {{ comment.updated_at }}
+                    </small>
+                  </p>
+                  <p style="margin-left:20px;">
+                    {{ comment.comment }}
+                    {% if comment.user == request.user %}
+                      <a href="{{ comment.get_delete_url }}"
+                        style="margin-right:20px;"
+                        class="pull-right text-danger ajax-post-confirm"
+                        data-target-id="comment-{{ comment.pk }}"
+                        data-message="삭제하시겠습니까?">
+                          <small>삭제</small>
+                      </a>
+                    {% endif %}
 
                     <div class="replies-form-{{ comment.pk }}" id="add-replies-{{ comment.pk }}" style="display:none;">
                       <table class="table table-hover">
@@ -208,8 +209,7 @@
                         </span>
                       {% endfor %}
                     </div>
-                  {% endif %}
-                </p>
+                  </p>
                 </td>
               </tr>
             </table>

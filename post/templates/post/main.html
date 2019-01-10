@@ -105,6 +105,14 @@
 
       </div>
       <div class="col-md-3 col-sm-6 col-xs-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>본당일정</strong></h4>
+        <a href="{% url 'schedule:schedule' %}">
+          <img src="{% static 'img/index_calendar.png' %}" alt="">
+        </a>
+
+      </div>
+
+      <div class="col-md-3 col-sm-6 col-xs-12">
         <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>매일미사</strong></h4>
         <img src="{% static 'img/logo_07.png' %}" alt="" style="width:200px;">
         <p>굿뉴스에서 제공하는</p>
@@ -114,12 +122,7 @@
           <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
         </a>
 
-      </div>
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>행사사진</strong></h4>
-
-
-          {% for gallery in gallery_list|slice:":2" %}
+          <!-- {% for gallery in gallery_list|slice:":2" %}
             <ul style="list-style:none; padding-left:0px;">
               <li style="float: left; margin-right:25px;">
                 {% if gallery.photo_set.all %}
@@ -136,14 +139,14 @@
             </ul>
           {% endfor %}
 
-        <a href="{% url 'gallery:gallery_list' %}">
-          <small>
-            <p style="color:gray;">
-              more ...
-              <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
-            </p>
-          </small>
-        </a>
+          <a href="{% url 'gallery:gallery_list' %}">
+            <small>
+              <p style="color:gray;">
+                more ...
+                <span class="glyphicon glyphicon-play" style="color:gray;"></span>
+              </p>
+            </small>
+          </a> -->
 
         <!-- {% for gallery in gallery_list|slice:":2" %}
           {% if gallery.photo_set.all %}
@@ -163,6 +166,66 @@
     </div>
 
     <br/>
+
+    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 30px; margin-bottom: 30px;">
+
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>행사사진</strong></h4>
+
+        {% for gallery in gallery_list|slice:":3" %}
+          <ul style="list-style:none; padding-left:0px;">
+            <li style="float: left; margin-right:30px;">
+              {% if gallery.photo_set.all %}
+                {% for p in gallery.photo_set.all|slice:":1" %}
+                  <img src="{{ p.photo.url }}" alt="..." style="width:150px; height:100px;">
+                {% endfor %}
+              {% endif %}
+
+              <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:#5D5D5D;" role="button">
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ gallery.title }}</strong></p>
+                <p><small><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small></p>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <a href="{% url 'gallery:gallery_list' %}">
+          <small>
+            <p style="color:gray;">
+              more ...
+              <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
+            </p>
+          </small>
+        </a>
+      </div>
+
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>우리들의 사진</strong></h4>
+
+        {% for picture in picture_list|slice:":3" %}
+          <ul style="list-style:none; padding-left:0px;">
+            <li style="float: left; margin-right:30px;">
+              {% if picture.thumbnail_set.all %}
+                {% for p in picture.thumbnail_set.all|slice:":1" %}
+                  <img src="{{ media }}{{ p }}" alt="..." style="width:150px; height:100px;">
+                {% endfor %}
+              {% endif %}
+
+              <a href="{% url 'picture:picture_detail' picture.pk %}" style="color:#5D5D5D;" role="button">
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ picture.title }}</strong></p>
+                <p><small><span class="glyphicon glyphicon-time"></span> {{ picture.updated_at|naturalday }}</small></p>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+        <a href="{% url 'picture:picture_list' %}">
+          <small>
+            <p style="color:gray;">more ...</p>
+          </small>
+        </a>
+      </div>
+
+    </div>
 
     <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 30px; margin-bottom: 30px;">
 
@@ -203,7 +266,7 @@
 
       </div>
 
-      <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="col-md-6 col-sm-6 col-xs-12">
         <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong >업무시간</strong></h4>
         <!-- <div style="float: left; line-height: 1.5;">
           <ul style="padding-left:0px;">
@@ -226,12 +289,13 @@
         </div> -->
         <img src="{% static 'img/work-time.png' %}" alt="" style="width:100%; height:125px;">
       </div>
-      <div class="col-md-3 col-sm-6 col-xs-12">
+
+      <!-- <div class="col-md-3 col-sm-6 col-xs-12">
         <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>본당일정</strong></h4>
         <a href="{% url 'schedule:schedule' %}">
           <img src="{% static 'img/index_calendar.png' %}" alt="">
         </a>
-      </div>
+      </div> -->
 
     </div>
 
