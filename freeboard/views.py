@@ -46,6 +46,16 @@ def freeboard_list(request):
 def freeboard_detail(request, pk):
     fboard = get_object_or_404(Freeboard, pk=pk)
     comments = fboard.freeboardcomment_set.all().filter(parent__isnull=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(comments, 3)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     form = CommentForm()
 
     comment_count = fboard.freeboardcomment_set.all().count()
@@ -54,6 +64,14 @@ def freeboard_detail(request, pk):
         print("count")
         Freeboard.objects.filter(pk=pk).update(hits = fboard.hits + 1)
         request.session['hit_count_%s' % pk] = False
+
+    if request.is_ajax():
+        return render(request, 'freeboard/comment_form_ajax.html', {
+            'form': form,
+            'fboard': fboard,
+            'comment_count': comment_count,
+            'comments': comments
+        })
 
     return render(request, 'freeboard/freeboard_detail.html', {
         'fboard': fboard,

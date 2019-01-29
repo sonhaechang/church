@@ -47,6 +47,16 @@ def notice_list(request):
 def notice_detail(request, pk):
     notice = get_object_or_404(Notice, pk=pk)
     comments = notice.noticecomment_set.all().filter(parent__isnull=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(comments, 3)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     form = CommentForm()
 
     comment_count = notice.noticecomment_set.all().count()
@@ -55,6 +65,14 @@ def notice_detail(request, pk):
         print("count")
         Notice.objects.filter(pk=pk).update(hits = notice.hits + 1)
         request.session['hit_count_%s' % pk] = False
+
+    if request.is_ajax():
+        return render(request, 'notice/comment_form_ajax.html', {
+            'form': form,
+            'notice': notice,
+            'comment_count': comment_count,
+            'comments': comments
+        })    
 
     return render(request, 'notice/notice_detail.html', {
         'form': form,

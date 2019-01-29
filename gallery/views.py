@@ -48,6 +48,16 @@ def gallery_list(request):
 def gallery_detail(request, pk):
     gallery = get_object_or_404(Gallery, pk=pk)
     comments = gallery.gallerycomment_set.all().filter(parent__isnull=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(comments, 3)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     form = CommentForm()
 
     comment_count = gallery.gallerycomment_set.all().count()
@@ -56,6 +66,14 @@ def gallery_detail(request, pk):
         print("count")
         Gallery.objects.filter(pk=pk).update(hits = gallery.hits + 1)
         request.session['hit_count_%s' % pk] = False
+
+    if request.is_ajax():
+        return render(request, 'notice/comment_form_ajax.html', {
+            'form': form,
+            'gallery': gallery,
+            'comment_count': comment_count,
+            'comments': comments
+        })
 
     return render(request, 'gallery/gallery_detail.html', {
         'gallery': gallery,

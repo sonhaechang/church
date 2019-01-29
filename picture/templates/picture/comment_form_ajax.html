@@ -5,7 +5,7 @@
         <td>
         <p style="margin-left:20px;">
           <i class="fas fa-user"></i>
-          <strong>{{ comment.user }}</strong>
+          <strong>{{ comment.user.last_name }}{{ comment.user.first_name }}</strong>
           <small style="margin-left:10px; cursor:pointer;">
             <span class="replies-btn glyphicon glyphicon-share-alt" style="color:#555;"></span>
             <span class="replies-btn replies-btn-{{ comment.pk }}" name="{{ comment.pk }}">답글</span>
@@ -26,24 +26,39 @@
               data-message="삭제하시겠습니까?">
                 <small>삭제</small>
             </a>
+          {% endif %}
 
-            <div class="replies-form-{{ comment.pk }}" style="display:none;">
+            <div class="replies-form-{{ comment.pk }}" id="add-replies-{{ comment.pk }}" style="display:none;">
               <table class="table table-hover">
                 <tr>
                   <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
-                  <!-- <input type="hidden" name="parent_id" value="{{ comment.id }}"> -->
-                  <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-relies" value="{{ post.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
+                  <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-replies" value="{{ picture.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
                 </tr>
               </table>
             </div>
 
-            <div id="replies-list-{{ comment.pk }}">
-              {% for replay in comment.replies.all|slice:":1" %}
+            {% if comment.replies.count != 0 %}
+              <small>
+                <a class="show-comment show-comment-{{ comment.pk }}" value="{{ comment.pk }}" href="#" style="margin-left:20px;">
+                  답글 {{ comment.replies.count }}개 보기
+                  <span class="glyphicon glyphicon-chevron-down"></span>
+                </a>
+              </small>
+              <small>
+                <a class="hide-comment hide-comment-{{ comment.pk }}" value="{{ comment.pk }}" href="#" style="margin-left:20px; display:none;">
+                  답글 숨기기
+                  <span class="glyphicon glyphicon-chevron-up"></span>
+                </a>
+              </small>
+            {% endif %}
+
+            <div id="replies-list-{{ comment.pk }}" style="display:none;">
+              {% for replay in comment.replies.all %}
                 <span class="replies">
                   <p style="margin-left:40px; margin-top:20px;">
                     L
                     <i class="fas fa-user"></i>
-                    <strong>{{ replay.user }}</strong>
+                    <strong>{{ replay.user.last_name }}{{ replay.user.first_name }}</strong>
                     <small class="pull-right" style="margin-right:40px;">
                       <span class="glyphicon glyphicon-time"></span>
                       {{ replay.updated_at }}
@@ -64,7 +79,7 @@
                 </span>
               {% endfor %}
             </div>
-          {% endif %}
+
         </p>
         </td>
       </tr>

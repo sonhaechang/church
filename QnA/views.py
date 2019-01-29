@@ -48,6 +48,16 @@ def QnA_list(request):
 def QnA_detail(request, pk):
     qna = get_object_or_404(QnA, pk=pk)
     comments = qna.qnacomment_set.all().filter(parent__isnull=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(comments, 3)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     form = CommentForm()
 
     comment_count = qna.qnacomment_set.all().count()
@@ -56,6 +66,14 @@ def QnA_detail(request, pk):
         print("count")
         QnA.objects.filter(pk=pk).update(hits = qna.hits + 1)
         request.session['hit_count_%s' % pk] = False
+
+    if request.is_ajax():
+        return render(request, 'QnA/comment_form_ajax.html', {
+            'form': form,
+            'qna': qna,
+            'comment_count': comment_count,
+            'comments': comments
+        })
 
     return render(request, 'QnA/QnA_detail.html', {
         'qna': qna,

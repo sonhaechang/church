@@ -48,6 +48,16 @@ def video_list(request):
 def video_detail(request, pk):
     video = get_object_or_404(Video, pk=pk)
     comments = video.videocomment_set.all().filter(parent__isnull=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(comments, 3)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     form = CommentForm()
 
     comment_count = video.videocomment_set.all().count()
@@ -56,6 +66,14 @@ def video_detail(request, pk):
         print("count")
         Video.objects.filter(pk=pk).update(hits = video.hits + 1)
         request.session['hit_count_%s' % pk] = False
+
+    if request.is_ajax():
+        return render(request, 'notice/comment_form_ajax.html', {
+            'form': form,
+            'video': video,
+            'comment_count': comment_count,
+            'comments': comments
+        })
 
     return render(request, 'video/video_detail.html', {
         'video': video,

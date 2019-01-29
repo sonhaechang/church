@@ -46,6 +46,16 @@ def weekly_list(request):
 def weekly_detail(request, pk):
     weekly = get_object_or_404(Weekly, pk=pk)
     comments = weekly.weeklycomment_set.all().filter(parent__isnull=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(comments, 3)
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
+
     form = CommentForm()
 
     comment_count = weekly.weeklycomment_set.all().count()
@@ -54,6 +64,14 @@ def weekly_detail(request, pk):
         print("count")
         Weekly.objects.filter(pk=pk).update(hits = weekly.hits + 1)
         request.session['hit_count_%s' % pk] = False
+
+    if request.is_ajax():
+        return render(request, 'notice/comment_form_ajax.html', {
+            'form': form,
+            'notice': notice,
+            'comment_count': comment_count,
+            'comments': comments
+        })
 
     return render(request, 'weekly/weekly_detail.html', {
         'weekly': weekly,
