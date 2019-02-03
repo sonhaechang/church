@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'freeboard',
     'gallery',
+    'group',
     'notice',
     'post',
     'picture',

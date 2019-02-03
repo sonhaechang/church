@@ -50,7 +50,7 @@ def gallery_detail(request, pk):
     comments = gallery.gallerycomment_set.all().filter(parent__isnull=True)
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(comments, 3)
+    paginator = Paginator(comments, 5)
     try:
         comments = paginator.page(page)
     except PageNotAnInteger:
@@ -68,7 +68,7 @@ def gallery_detail(request, pk):
         request.session['hit_count_%s' % pk] = False
 
     if request.is_ajax():
-        return render(request, 'notice/comment_form_ajax.html', {
+        return render(request, 'gallery/comment_form_ajax.html', {
             'form': form,
             'gallery': gallery,
             'comment_count': comment_count,

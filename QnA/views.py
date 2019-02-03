@@ -50,7 +50,7 @@ def QnA_detail(request, pk):
     comments = qna.qnacomment_set.all().filter(parent__isnull=True)
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(comments, 3)
+    paginator = Paginator(comments, 5)
     try:
         comments = paginator.page(page)
     except PageNotAnInteger:

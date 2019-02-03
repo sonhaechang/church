@@ -21,22 +21,20 @@
       <!-- col-xs-4 col-sm-2 -->
       <div class="col-md-2 sidebar-offcanvas" id="sidebar">
         <div class="list-group">
-          <h3>참여마당</h3>
-          <a href="{% url 'picture:picture_list' %}" class="list-group-item">우리들 사진</a>
-          <a href="{% url 'video:video_list' %}" class="list-group-item">우리들 영상</a>
-          <a href="{% url 'QnA:QnA_list' %}" class="list-group-item active">묻고 답하기</a>
-          <a href="{% url 'freeboard:freeboard_list' %}" class="list-group-item">자유게시판</a>
+          <h3>단체 개시판</h3>
+          <a href="{% url 'post:pastoral_counsil' %}" class="list-group-item">사목협의회</a>
+          <a href="{% url 'group:group_list' %}" class="list-group-item active">단체 개시판</a>
         </div>
       </div>
         <!--/.sidebar-offcanvas-->
 
       <div class="col-md-10" id="content">
 
-        <h3>{{ qna.title }}</h3>
+        <h3>{{ group.title }}</h3>
         <hr style="margin-bottom:10px;">
         <span style="margin-left:10px;">
           <i class="fas fa-user"></i>
-          <strong>{{ qna.user.username }}</strong>
+          <strong>{{ group.user.username }}</strong>
         </span>
 
         <span style="margin-left:20px;">
@@ -46,7 +44,7 @@
           </small>
         </span>
 
-        {% if qna.user == request.user %}
+        {% if group.user == request.user %}
           <span class="dropdown pull-right" style="margin-right:20px; cursor:pointer;">
             <!-- <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
               <span class="fas fa-cog" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"></span>
@@ -54,13 +52,13 @@
             </button> -->
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="background-color: #fff;">
               <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="{% url 'QnA:QnA_edit' qna.pk %}">
+                <a role="menuitem" tabindex="-1" href="{% url 'group:group_edit' group.pk %}">
                   <button class="btn btn-default" style="border:none; width:100%;">수정</button>
                 </a>
               </li>
               <li role="presentation">
                 <a role="menuitem" tabindex="-1">
-                  <form action="{% url 'QnA:QnA_delete' qna.pk %}" method="post" role="menuitem" tabindex="-1">
+                  <form action="{% url 'group:group_delete' group.pk %}" method="post" role="menuitem" tabindex="-1">
                     {% csrf_token %}
                     <input type="submit" value="삭제" class="btn btn-default" onclick="return confirm('정말 삭제하시겠습니까?');" style="border:none; width:100%;">
                   </form>
@@ -73,30 +71,30 @@
         <span class="pull-right" style="margin-right:10px;">
           <small>
             <span class="glyphicon glyphicon-time"></span>
-            {{ qna.updated_at }}
+            {{ group.updated_at }}
           </small>
         </span>
         <span class="pull-right" style="margin-right:20px;">
           <small>
             <span class="glyphicon glyphicon-eye-open"></span>
-            {{ qna.hits }}
+            {{ group.hits }}
           </small>
         </span>
         <hr style="margin-top:10px;">
 
-        <a href="{% url 'QnA:QnA_list' %}" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+        <a href="{% url 'group:group_list' %}" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
           목록
         </a>
 
         <p class="other_posts pull-right">
-          {% if qna.get_previous_by_updated_at %}
-            <a href="{{ qna.get_previous_post.get_absolute_url }}" title="View previous weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+          {% if group.get_previous_by_updated_at %}
+            <a href="{{ group.get_previous_post.get_absolute_url }}" title="View previous weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
               이전글
             </a>
           {% endif %}
 
-          {% if qna.get_next_by_updated_at %}
-            <a href="{{ qna.get_next_post.get_absolute_url }}" title="View next weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+          {% if group.get_next_by_updated_at %}
+            <a href="{{ group.get_next_post.get_absolute_url }}" title="View next weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
               다음글
             </a>
           {% endif %}
@@ -105,22 +103,22 @@
         <div style="margin-top:70px;">
 
 
-          {{ qna.content|safe }}
+          {{ group.content|safe }}
 
           <br>
           <br>
 
-          <a href="{% url 'QnA:QnA_list' %}" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">목록</a>
+          <a href="{% url 'group:group_list' %}" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">목록</a>
 
           <p class="other_posts pull-right">
-            {% if qna.get_previous_by_updated_at %}
-              <a href="{{ qna.get_previous_post.get_absolute_url }}" title="View previous weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+            {% if group.get_previous_by_updated_at %}
+              <a href="{{ group.get_previous_post.get_absolute_url }}" title="View previous weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
                 이전글
               </a>
             {% endif %}
 
-            {% if qna.get_next_by_updated_at %}
-              <a href="{{ qna.get_next_post.get_absolute_url }}" title="View next weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
+            {% if group.get_next_by_updated_at %}
+              <a href="{{ group.get_next_post.get_absolute_url }}" title="View next weekly" class="btn btn-info btn-sm" style="background:#555; border-color:#555;">
                 다음글
               </a>
             {% endif %}
@@ -135,17 +133,17 @@
         </h3>
 
         {% if user.is_authenticated %}
-        <table class="table table-hover" id="add-comment-{{ qna.pk }}">
+        <table class="table table-hover" id="add-comment-{{ group.pk }}">
           <tr>
             <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
-            <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-comment" value="{{ qna.pk }}" style="height:75px; width:75px;">댓글작성</button></td>
+            <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-comment" value="{{ group.pk }}" style="height:75px; width:75px;">댓글작성</button></td>
           </tr>
         </table>
         {% endif %}
 
-        {% if qna.qnacomment_set.all %}
+        {% if group.groupcomment_set.all %}
           <div id="comments-div">
-            {% include "QnA/comment_form_ajax.html" %}
+            {% include "group/comment_form_ajax.html" %}
             <!-- {% for comment in comments %}
               <table class="table table-hover">
                 <tr>
@@ -179,7 +177,7 @@
                         <table class="table table-hover">
                           <tr>
                             <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
-                            <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-replies" value="{{ qna.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
+                            <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-replies" value="{{ group.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
                           </tr>
                         </table>
                       </div>
@@ -317,7 +315,7 @@
     $(document).on('click', '.add-comment', function(e) {
     e.preventDefault();
     var pk = $(this).attr("value");
-    var url = "{% url 'QnA:comment_new' %}";
+    var url = "{% url 'group:comment_new' %}";
     var comment = $("textarea#add-comment").val();
     console.log(comment);
     // alert(comment);
@@ -345,7 +343,7 @@
     e.preventDefault();
     var pk = $(this).attr("value");
     var parent_id = $(this).attr("name");
-    var url = "{% url 'QnA:comment_new' %}";
+    var url = "{% url 'group:comment_new' %}";
     var comment = $(this).closest('tr').children('td:first').find("#add-comment").val();
     console.log(comment);
     console.log(parent_id);

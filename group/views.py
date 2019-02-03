@@ -1,22 +1,24 @@
+import os
+from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from freeboard.models import Freeboard, FreeboardComment
-from freeboard.forms import FreeboardForm, CommentForm
+from group.models import Group, GroupComment
+from group.forms import GroupForm, CommentForm
 
 # Create your views here.
-def freeboard_list(request):
-    fboard = Freeboard.objects.all()
+def group_list(request):
+    group = Group.objects.all()
 
     q = request.GET.get('q', '')
     if q:
-        fboard = fboard.filter(title__icontains=q)
+        group = Group.filter(title__icontains=q)
 
-    total_len = len(fboard)
+    total_len = len(group)
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(fboard, 20)
+    paginator = Paginator(group, 20)
     try:
         lines = paginator.page(page)
     except PageNotAnInteger:
@@ -34,18 +36,18 @@ def freeboard_list(request):
     page_range = list(paginator.page_range[start_index:end_index])
 
     context = {
-        'fboard_list': lines,
+        'group_list': lines,
         'page_range':page_range,
         'total_len':total_len,
         'max_index':max_index-2,
         'q': q
     }
-    return render (request, 'freeboard/freeboard.html', context)
+    return render (request, 'group/group.html', context)
 
 
-def freeboard_detail(request, pk):
-    fboard = get_object_or_404(Freeboard, pk=pk)
-    comments = fboard.freeboardcomment_set.all().filter(parent__isnull=True)
+def group_detail(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    comments = group.groupcomment_set.all().filter(parent__isnull=True)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(comments, 5)
@@ -58,23 +60,23 @@ def freeboard_detail(request, pk):
 
     form = CommentForm()
 
-    comment_count = fboard.freeboardcomment_set.all().count()
+    comment_count = group.groupcomment_set.all().count()
 
     if request.session.get('hit_count_%s' % pk, True):
         print("count")
-        Freeboard.objects.filter(pk=pk).update(hits = fboard.hits + 1)
+        Group.objects.filter(pk=pk).update(hits = group.hits + 1)
         request.session['hit_count_%s' % pk] = False
 
     if request.is_ajax():
-        return render(request, 'freeboard/comment_form_ajax.html', {
+        return render(request, 'group/comment_form_ajax.html', {
             'form': form,
-            'fboard': fboard,
+            'group': group,
             'comment_count': comment_count,
             'comments': comments
         })
 
-    return render(request, 'freeboard/freeboard_detail.html', {
-        'fboard': fboard,
+    return render(request, 'group/group_detail.html', {
+        'group': group,
         'form': form,
         'comment_count': comment_count,
         'comments': comments
@@ -82,58 +84,57 @@ def freeboard_detail(request, pk):
 
 
 @login_required
-def freeboard_new(request):
+def group_new(request):
     if request.method == 'POST':
-        form = FreeboardForm(request.POST, request.FILES)
+        form = GroupForm(request.POST, request.FILES)
         if form.is_valid():
-            fboard = form.save(commit=False)
-            fboard.user = request.user
-            fboard.save()
-            return redirect('freeboard:freeboard_detail', fboard.pk)
+            group = form.save(commit=False)
+            group.user = request.user
+            group.save()
+            return redirect('group:group_detail', group.pk)
     else:
-        form = FreeboardForm()
+        form = GroupForm()
 
-    return render(request, 'freeboard/freeboard_new.html', {
+    return render(request, 'group/group_new.html', {
         'form': form,
     })
 
 
 @login_required
-def freeboard_edit(request, pk):
-    fboard = get_object_or_404(Freeboard, pk=pk)
+def group_edit(request, pk):
+    group = get_object_or_404(Group, pk=pk)
 
-    if fboard.user == request.user:
+    if group.user == request.user:
         if request.method == 'POST':
-            form = FreeboardForm(request.POST, request.FILES, instance=fboard)
+            form = GroupForm(request.POST, request.FILES, instance=group)
             if form.is_valid():
-                fboard = form.save(commit=False)
-                fboard.user = request.user
-                fboard.save()
-                return redirect('freeboard:freeboard_detail', fboard.pk)
+                group = form.save(commit=False)
+                group.user = request.user
+                group.save()
+                return redirect('group:group_detail', group.pk)
         else:
-            form = FreeboardForm(instance=fboard)
+            form = GroupForm(instance=group)
 
-        return render(request, 'freeboard/freeboard_edit.html', {
-            'fboard': fboard,
+        return render(request, 'group/group_edit.html', {
+            'group': group,
             'form': form,
         })
 
-
 @login_required
-def freeboard_delete(request, pk):
-    fboard = get_object_or_404(Freeboard, pk=pk)
-    if fboard.user == request.user:
+def group_delete(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    if group.user == request.user:
         if request.method == 'POST':
-            fboard.delete()
+            group.delete()
             messages.success(request, '포스팅을 삭제했습니다.')
-            return redirect('freeboard:freeboard_list')
+            return redirect('group:group_list')
 
 
 @login_required
 def comment_new(request):
     pk = request.POST.get('pk')
-    fboard = get_object_or_404(Freeboard, pk=pk)
-    comments = fboard.freeboardcomment_set.all().filter(parent__isnull=True).order_by('-created_at')[:1]
+    group = get_object_or_404(Group, pk=pk)
+    comments = group.groupcomment_set.all().filter(parent__isnull=True).order_by('-created_at')[:1]
     form = CommentForm()
 
 
@@ -149,29 +150,29 @@ def comment_new(request):
                 parent_id = None
 
             if parent_id:
-                parent_obj = FreeboardComment.objects.get(id=parent_id)
+                parent_obj = GroupComment.objects.get(id=parent_id)
 
                 if parent_obj:
                     replay_comment = form.save(commit=False)
                     replay_comment.parent = parent_obj
 
             comment = form.save(commit=False)
-            comment.freeboard = fboard
+            comment.group = grouop
             comment.user = request.user
             comment.save()
-            return render(request, 'freeboard/comment_form_ajax.html', {
+            return render(request, 'group/comment_form_ajax.html', {
                 'comments': comments,
                 'form': form,
             })
-        return redirect('freeboard:freeboard_detail', fboard.pk)
+        return redirect('group:group_detail', group.pk)
 
 
 @login_required
-def comment_delete(request, fboard_pk, pk):
-    comment = get_object_or_404(FreeboardComment, pk=pk)
+def comment_delete(request, group_pk, pk):
+    comment = get_object_or_404(GroupComment, pk=pk)
 
     if request.method == 'POST':
         if comment.user == request.user:
             comment.delete()
-            return redirect('freeboard:freeboard_list')
-    return render(request, 'freeboard/comment_delete.html', {'comment': comment})
+            return redirect('group:group_list')
+    return render(request, 'group/comment_delete.html', {'comment': comment})

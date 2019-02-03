@@ -31,6 +31,7 @@ urlpatterns = [
     re_path(r'^schedule/', include('schedule.urls', namespace='schedule')),
     re_path(r'^video/', include('video.urls', namespace='video')),
     re_path(r'^weekly/', include('weekly.urls', namespace='weekly')),
+    re_path(r'^group/', include('group.urls', namespace='group')),
 
 ]
 

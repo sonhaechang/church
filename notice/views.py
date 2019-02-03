@@ -49,7 +49,7 @@ def notice_detail(request, pk):
     comments = notice.noticecomment_set.all().filter(parent__isnull=True)
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(comments, 3)
+    paginator = Paginator(comments, 5)
     try:
         comments = paginator.page(page)
     except PageNotAnInteger:
@@ -72,7 +72,7 @@ def notice_detail(request, pk):
             'notice': notice,
             'comment_count': comment_count,
             'comments': comments
-        })    
+        })
 
     return render(request, 'notice/notice_detail.html', {
         'form': form,
