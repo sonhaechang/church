@@ -26,7 +26,7 @@ def main_page(request):
         'gallery_list': gallery,
         'picture_list': picture,
         'media': settings.MEDIA_URL,
-        'form': form,
+        'search_form': form,
     })
 
 
@@ -109,7 +109,7 @@ def post_search(request):
 
 
             context = {
-                'form': form,
+                'search_form': form,
                 'notice_list': notice,
                 'weekly_list': weekly,
                 'gallery_list': gallery,
@@ -124,4 +124,4 @@ def post_search(request):
             return render(request, 'post/search_form.html', context)
     else:
         form = SearchForm()
-    return render(request, 'post/search_form.html',{'form': form})
+    return render(request, 'post/search_form.html',{'search_form': form})

@@ -13,7 +13,7 @@
         <form action="." method="post">
           {% csrf_token %}
           <span class="input-group-btn">
-            {{ form.search_word }}
+            {{ search_form.search_word }}
           </span>
           <span class="input-group-btn">
             <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">

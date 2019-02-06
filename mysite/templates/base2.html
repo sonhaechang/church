@@ -129,7 +129,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="{% url 'post:pastoral_counsil' %}">사목협의회</a></li>
-                  <li><a href="{% url 'group:group_list' %}">단체 게시판</a></li>
+                  <li><a href="{% url 'group:group_list' %}">단체 일정</a></li>
                 </ul>
               </li>
 
@@ -210,7 +210,7 @@
               <form action="{% url 'post:post_search' %}" method="post">
                 {% csrf_token %}
                 <span class="input-group-btn">
-                  {{ form.search_word }}
+                  {{ search_form.search_word }}
                 </span>
                 <span class="input-group-btn">
                   <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
