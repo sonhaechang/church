@@ -75,12 +75,26 @@
                 로그인
               </a>
             </li>
+            <li style="float:left; margin-left:20px;">
+              <button id="search" type="button" name="button" style="border:none; padding-top:0px;">
+                <!-- <a href="{% url 'post:post_search' %}"> -->
+                  <i class="glyphicon glyphicon-search"></i>
+                <!-- </a> -->
+              </button>
+            </li>
           {% else %}
-            <li>
+            <li style="float:left;">
               <a href="{% url "profile" %}">
                 <i class="fas fa-user"></i>
                 {{ request.user.last_name }}{{ request.user.first_name }} 님
               </a>
+            </li>
+            <li style="float:left; margin-left:20px;">
+              <button id="search" type="button" name="button" style="border:none; padding-top:0px;">
+                <!-- <a href="{% url 'post:post_search' %}"> -->
+                  <i class="glyphicon glyphicon-search"></i>
+                <!-- </a> -->
+              </button>
             </li>
           {% endif %}
         </ul>
@@ -115,7 +129,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="{% url 'post:pastoral_counsil' %}">사목협의회</a></li>
-                  <li><a href="{% url 'group:group_list' %}">단체 개시판</a></li>
+                  <li><a href="{% url 'group:group_list' %}">단체 게시판</a></li>
                 </ul>
               </li>
 
@@ -182,6 +196,32 @@
     			</ul>
     		</div>
       </nav> -->
+
+      <div class="modal fade" id="modal-searchform-modal" tableindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" style="text-align: center; ">전체 게시판 검색</h3>
+              <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="padding-left:200px;">
+              <form action="{% url 'post:post_search' %}" method="post">
+                {% csrf_token %}
+                <span class="input-group-btn">
+                  {{ form.search_word }}
+                </span>
+                <span class="input-group-btn">
+                  <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
+                      <i class="glyphicon glyphicon-search"></i>
+                  </button>
+                </span>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
     {% if messages %}
       <div class="container">
@@ -264,6 +304,14 @@
         })
 
       })
+
+      $('#search').click(function(e) {
+      e.preventDefault();
+      // var url = $(this).attr('href');
+
+      var $modal = $("#modal-searchform-modal");
+      $modal.modal();
+    });
     </script>
     {% block extra_body %}
     {% endblock %}

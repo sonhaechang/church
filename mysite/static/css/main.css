@@ -125,6 +125,10 @@
     width:100%;
 }
 
+#modal-searchform-modal {
+  z-index: 10000000000000;
+}
+
 /* @media only screen and (min-device-width: 320px) {
   #header { display: none; }
 } */
