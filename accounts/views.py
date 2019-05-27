@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login as django_login, get_user_model
+from django.contrib.auth import login as django_login, get_user_model, update_session_auth_hash
 from django.shortcuts import redirect, render, resolve_url
 from accounts.forms import SignupForm, EditProfileForm, ProfileForm, LoginForm
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
@@ -74,10 +74,10 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
+            messages.success(request, '비밀번호가 성공적으로 변경되었습니다.')
             return redirect('profile')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, '아래 오류를 수정하십시오.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'accounts/change_password.html', {
@@ -91,7 +91,8 @@ class MyPasswordResetView(PasswordResetView):
     # email_template_name = '...'
 
     def form_valid(self, form):
-        messages.info(self.request, 'Your password change email has been sent.')
+        # messages.info(self.request, 'Your password change email has been sent.')
+        messages.info(self.request, '비밀번호 변경 이메일이 전송되었습니다.')
         return super().form_valid(form)
 
 
@@ -101,5 +102,6 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
     # email_template_name = '...'
 
     def form_valid(self, form):
-        messages.info(self.request, 'Your password has been successfully set.')
+        # messages.info(self.request, 'Your password has been successfully set.')
+        messages.info(self.request, '비밀번호가 성공적으로 변경되었습니다.')
         return super().form_valid(form)

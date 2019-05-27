@@ -37,9 +37,35 @@
         {% if notice_list or weekly_list or gallery_list or picture_list or freeboard_list or group_list or video_list %}
           {% if notice_list %}
             <h3>공지사항</h3>
-            {% for notice in notice_list %}
-              <p><a href="{% url 'notice:notice_detail' notice.pk %}">{{ notice.title }}</a></p>
-            {% endfor %}
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>글쓴이</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for notice in notice_list %}
+                    <!-- style="cursor:pointer;" -->
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>
+                        <a href="{% url 'notice:notice_detail' notice.pk %}" class="view-counter">{{ notice.title }}
+                          {% if notice.groupcomment_set.all %}
+                            <small class="text-danger">[{{ notice.noticecomment_set.count }}]</small>
+                          {% endif %}
+                        </a>
+                      </td>
+                      <td><small>{{ notice.user.last_name }}{{ notice.user.first_name }}</small></td>
+                      <td><small>{{ notice.updated_at }}</small></td>
+                      <td>{{ notice.hits }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
           {% endif %}
 
           {% if weekly_list %}

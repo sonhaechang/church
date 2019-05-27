@@ -9,4 +9,5 @@ urlpatterns = [
     re_path(r'^location/$', views.location, name='location'),
     re_path(r'^pastoral_counsil/$', views.pastoral_counsil, name='pastoral_counsil'),
     re_path(r'^search/$', views.post_search, name='post_search'),
+    re_path(r'^history/$', views.history, name='history'),
 ]

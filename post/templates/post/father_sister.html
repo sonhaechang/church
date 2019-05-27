@@ -20,6 +20,7 @@
         <div class="list-group">
           <h3>본당소개</h3>
           <a href="{% url 'post:church_info' %}" class="list-group-item">본당소개</a>
+          <a href="{% url 'post:history' %}" class="list-group-item">본당연혁</a>
           <a href="{% url 'post:father_sister' %}" class="list-group-item active">신부님/수녀님</a>
           <a href="{% url 'post:location' %}" class="list-group-item">오시는길</a>
         </div>
@@ -31,10 +32,62 @@
         <hr>
 
         <div style="margin-top:70px;">
-          <img src="{% static 'img/padre.png' %}" alt="" style="width: 100%; height:400px;">
-          <hr>
-          <br>
-          <img src="{% static 'img/sunyeonim.png' %}" alt="" style="width: 100%; height:400px">
+          <div class="col-md-12">
+            <div class="col-md-2">
+              <h3>주임신부님</h3>
+              <br>
+              <div style="width:150px; height:160px;">
+                <img src="{% static 'img/father.jpg' %}" alt="주임신부님 사진" style="width:150px; height:160px;">
+              </div>
+            </div>
+            <div class="col-md-3" style="margin-top:100px; margin-left:30px;">
+                <h3 style="color:#7a0039">나오진 사도요한</h3>
+                <div>
+                  <p>부임일: 2019. 02</p>
+                  <p>축일: 12. 27</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-md-12" style="margin-top:50px; margin-bottom:50px;">
+            <hr>
+          </div>
+
+
+          <div class="col-md-12" style=" margin-bottom:100px;">
+            <div class="col-md-6">
+              <div class="col-md-5">
+                <h3>원장수녀님</h3>
+                <br>
+                <div style="width:150px; height:160px; border: 1px dotted black;">
+                  <img src="{% static 'img/sister1.jpg' %}" alt="이미지 준비중" style="width:150px; height:160px;">
+                </div>
+              </div>
+              <div class="col-md-7" style="margin-top:100px;">
+                <h3 style="color:#7a0039">박 스테파나</h3>
+                <div>
+                  <p>부임일: 2017. 02</p>
+                  <p>축일: 12. 26</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="col-md-5">
+                <h3>전교수녀님</h3>
+                <br>
+                <div style="width:150px; height:160px; border: 1px dotted black;">
+                  <img src="{% static 'img/sister2.jpg' %}" alt="이미지 준비중" style="width:150px; height:160px;">
+                </div>
+              </div>
+              <div class="col-md-7" style="margin-top:100px;">
+                <h3 style="color:#7a0039">이 엘리아</h3>
+                <div>
+                  <p>부임일: 2018. 02</p>
+                  <p>축일: 07. 20</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
 

@@ -39,4 +39,4 @@ class GroupComment(models.Model):
         ordering = ['-id']
 
     def get_delete_url(self):
-        return reverse('group:comment_delete', args=[self.qna.pk, self.pk])
+        return reverse('group:comment_delete', args=[self.group.pk, self.pk])

@@ -121,46 +121,6 @@
           보러가기
           <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
         </a>
-
-          <!-- {% for gallery in gallery_list|slice:":2" %}
-            <ul style="list-style:none; padding-left:0px;">
-              <li style="float: left; margin-right:25px;">
-                {% if gallery.photo_set.all %}
-                  {% for p in gallery.photo_set.all|slice:":1" %}
-                    <img src="{{ p.photo.url }}" alt="..." style="width:80px; height:80px;">
-                  {% endfor %}
-                {% endif %}
-
-                <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:#5D5D5D;" role="button">
-                  <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ gallery.title }}</strong></p>
-                  <p><small><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small></p>
-                </a>
-              </li>
-            </ul>
-          {% endfor %}
-
-          <a href="{% url 'gallery:gallery_list' %}">
-            <small>
-              <p style="color:gray;">
-                more ...
-                <span class="glyphicon glyphicon-play" style="color:gray;"></span>
-              </p>
-            </small>
-          </a> -->
-
-        <!-- {% for gallery in gallery_list|slice:":2" %}
-          {% if gallery.photo_set.all %}
-            {% for p in gallery.photo_set.all|slice:":1" %}
-              <img src="{{ p.photo.url }}" alt="..." style="width:100px; height:100px;">
-            {% endfor %}
-          {% endif %}
-
-          <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:#5D5D5D;" role="button">
-            <p style="margin-top:10px; margin-bottom:0px;"><strong>{{ gallery.title }}</strong></p>
-            <p><small><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small></p>
-          </a>
-        {% endfor %} -->
-
       </div>
 
     </div>
@@ -182,21 +142,21 @@
               {% endif %}
 
               <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:#5D5D5D;" role="button">
-                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ gallery.title }}</strong></p>
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ gallery.title|truncatechars:18 }}</strong></p>
                 <p><small><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small></p>
               </a>
             </li>
           </ul>
         {% endfor %}
 
-        <a href="{% url 'gallery:gallery_list' %}">
-          <small>
-            <p style="color:gray;">
-              more ...
-              <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
-            </p>
-          </small>
-        </a>
+        <div class="col-md-12">
+          <a href="{% url 'gallery:gallery_list' %}">
+            <small>
+              <p style="color:gray;">more ...</p>
+            </small>
+          </a>
+        </div>
+
       </div>
 
       <div class="col-md-6 col-sm-12 col-xs-12">
@@ -212,17 +172,20 @@
               {% endif %}
 
               <a href="{% url 'picture:picture_detail' picture.pk %}" style="color:#5D5D5D;" role="button">
-                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ picture.title }}</strong></p>
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ picture.title|truncatechars:18 }}</strong></p>
                 <p><small><span class="glyphicon glyphicon-time"></span> {{ picture.updated_at|naturalday }}</small></p>
               </a>
             </li>
           </ul>
         {% endfor %}
-        <a href="{% url 'picture:picture_list' %}">
-          <small>
-            <p style="color:gray;">more ...</p>
-          </small>
-        </a>
+        
+        <div class="col-md-12">
+            <a href="{% url 'picture:picture_list' %}">
+              <small>
+                <p style="color:gray;">more ...</p>
+              </small>
+            </a>
+        </div>
       </div>
 
     </div>
@@ -231,71 +194,13 @@
 
       <div class="col-md-6 col-sm-12 col-xs-12">
         <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>미사시간 안내</strong></h4>
-
-        <a href="#">
-          <img src="{% static 'img/mass-time.png' %}" alt="" style="width:100%; height:125px;">
-        </a>
-
-        <!-- <div style="float: left;">
-          <ul style="padding-left:0; line-height: 2.2;">
-            <li style="list-style:none;">화요일 : 오전 10시</li>
-            <li style="list-style:none;">수요일 : 오전 10시</li>
-            <li style="list-style:none; margin-left:47.5px;">오후 7시 30분</li>
-            <li style="list-style:none;">목요일 : 오전 10시</li>
-          </ul>
-        </div>
-
-        <div style="float: left; line-height: 2.2;">
-          <ul style="padding-left:35px;">
-            <li style="list-style:none;">금요일 : 오전 10시</li>
-            <li style="list-style:none;">토요일 : 오전 10시(매월 첫 주)</li>
-            <li style="list-style:none; margin-left:47.5px;">오후 4시(초등부)</li>
-            <li style="list-style:none; margin-left:47.5px;">오후 7시 30분(특전미사)</li>
-          </ul>
-        </div>
-
-        <div style="float: left; line-height: 2.2;">
-          <ul style="padding-left:35px; color:orange;">
-            <li style="list-style:none;">주일 : 오전 6시 30분</li>
-            <li style="list-style:none; margin-left:35.5px;">오전 9시(중,고생)</li>
-            <li style="list-style:none; margin-left:35.5px;">오전 11시(교중미사)</li>
-            <li style="list-style:none; margin-left:35.5px;">오후 6시(청년미사)</li>
-          </ul>
-        </div> -->
-
-
+        <img src="{% static 'img/schedule_540.png' %}" alt="" style="width:100%; height:125px;">
       </div>
 
       <div class="col-md-6 col-sm-6 col-xs-12">
         <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong >업무시간</strong></h4>
-        <!-- <div style="float: left; line-height: 1.5;">
-          <ul style="padding-left:0px;">
-            <li style="list-style:none;">월: 휴무</li>
-            <li style="list-style:none;">화: 9시~17시</li>
-            <li style="list-style:none;">수: 9시~17시</li>
-            <li style="list-style:none;">목: 9시~17시</li>
-            <li style="list-style:none;">금: 휴무</li>
-            <li style="list-style:none;">토: 9시~21시(첫주)</li>
-          </ul>
-        </div>
-        <div style="float: left; margin-left:80px;">
-          <ul style="padding-left:35px;">
-            <li style="list-style:none;">주일: </li>
-            <li style="list-style:none; color:#ffffff">.</li>
-            <li style="list-style:none;">점심시간: </li>
-            <li style="list-style:none;">평일: </li>
-            <li style="list-style:none;">주일: </li>
-          </ul>
-        </div> -->
-        <img src="{% static 'img/work-time.png' %}" alt="" style="width:100%; height:125px;">
+        <img src="{% static 'img/office_540.png' %}" alt="" style="width:100%; height:125px;">
       </div>
-
-      <!-- <div class="col-md-3 col-sm-6 col-xs-12">
-        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>본당일정</strong></h4>
-        <a href="{% url 'schedule:schedule' %}">
-          <img src="{% static 'img/index_calendar.png' %}" alt="">
-        </a>
-      </div> -->
 
     </div>
 

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
 from gallery.models import Gallery, Photo, GalleryComment
-from gallery.forms import GalleryForm, PhotoForm, CommentForm
+from gallery.forms import GalleryForm, CommentForm
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 

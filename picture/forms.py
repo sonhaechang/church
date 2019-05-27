@@ -27,12 +27,6 @@ class PhotoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # class_update_fields = ['photo']
-        # for field_name in class_update_fields:
-        #     self.fields[field_name].widget.attrs.update({
-        #         'class': 'form-control'
-        #     })
-
         self.fields['photo'].label = _('사진')
 
     class Meta:

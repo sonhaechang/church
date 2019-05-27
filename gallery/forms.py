@@ -1,8 +1,11 @@
 from django import forms
 from gallery.models import Gallery, Photo, GalleryComment
 from django.utils.translation import gettext_lazy as _
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 class GalleryForm(forms.ModelForm):
+    content = forms.CharField(widget=SummernoteWidget())
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         class_update_fields = ['title', 'content']
@@ -24,12 +27,6 @@ class PhotoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # class_update_fields = ['photo']
-        # for field_name in class_update_fields:
-        #     self.fields[field_name].widget.attrs.update({
-        #         'class': 'form-control'
-        #     })
-
         self.fields['photo'].label = _('사진')
 
     class Meta:

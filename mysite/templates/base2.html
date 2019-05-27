@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
     <!-- <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -31,197 +32,170 @@
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
     {% block css %}{% endblock %}
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}천주교대교구 대치4동성당{% endblock %}</title>
   </head>
   <body>
-    <!-- <div class="navbar-wrapper" style="margin-top:0px;">
+
+    <div class="header" id="header">
+
+      <a class="logo" href="{% url 'post:main_page' %}" style="padding-top: 3px; margin-left: 10px; float:left;"><img src="{% static 'img/logo_166.png' %}" alt="" style="width: 166px; height: 75px;"></a>
+      <ul class="pull-right" id="login" style="padding-right:80px;">
+        {% if not user.is_authenticated %}
+          <li style="float:left;">
+            <a href="{% url "login" %}?next={{ request.path }}" >
+              <i class="fas fa-user-plus"></i>
+              로그인
+            </a>
+          </li>
+          <li style="float:left; margin-left:20px;">
+            <button id="search" type="button" name="button" class="btn btn-default" style="border:none; padding-top:0px;">
+              <!-- <a href="{% url 'post:post_search' %}"> -->
+                <i class="glyphicon glyphicon-search"></i>
+              <!-- </a> -->
+            </button>
+          </li>
+        {% else %}
+          <li style="float:left;">
+            <a href="{% url "profile" %}">
+              <i class="fas fa-user"></i>
+              {{ request.user.last_name }}{{ request.user.first_name }} 님
+            </a>
+          </li>
+          <li style="float:left; margin-left:20px;">
+            <button id="search" type="button" name="button" class="btn btn-default" style="border:none; padding-top:0px;">
+              <!-- <a href="{% url 'post:post_search' %}"> -->
+                <i class="glyphicon glyphicon-search"></i>
+              <!-- </a> -->
+            </button>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="navbar" id="navbar">
       <div class="container">
-        <nav class="navbar navbar-default navbar-fixed-top" style="height: 80px; border-color: #FFFFFF;">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="{% url 'post:main_page' %}" style="padding-top: 3px; margin-left: 10px;"><img src="{% static 'img/logo.png' %}" alt="" style="width: 166px; height: 75px;"></a>
+        <div class="row">
 
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav navbar-right" style="margin-top: 15px; margin-right: 20px;">
-                {% if not user.is_authenticated %}
-                  <li><a href="{% url "login" %}?next={{ request.path }}" >로그인</a></li>
-                {% else %}
-                  <li><a href="{% url "profile" %}">{{ request.user.last_name }}{{ request.user.first_name }} 님</a></li>
-                  <li><a href="{% url "logout" %}?next={{ request.path }}">로그아웃</a></li>
-              {% endif %}
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-ul" aria-expanded="false" aria-controls="navbar-ul">
+        			<span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+      		</div>
+
+          <ul class="nav navbar-nav collapse navbar-collapse" id="navbar-ul">
+            <li class="dropdown"><a href="{% url 'post:main_page' %}" style='color:white'>HOME</a></li>
+
+            <li class="dropdown nav-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소개 <span class="caret"></span></a>
+              <ul class="dropdown-menu nav-dropdown-menu">
+                <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
+                <li><a href="{% url 'post:history' %}">본당연혁</a></li>
+                <li><a href="{% url 'post:father_sister' %}">신부님/수녀님</a></li>
+                <li><a href="{% url 'post:location' %}">오시는길</a></li>
               </ul>
-            </div>
-          </div>
-        </nav>
+            </li>
 
+            <li class="dropdown nav-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체 <span class="caret"></span></a>
+              <ul class="dropdown-menu nav-dropdown-menu">
+                <li><a href="{% url 'post:pastoral_counsil' %}">사목협의회</a></li>
+                <li><a href="{% url 'group:group_list' %}">단체 일정</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown nav-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소식 <span class="caret"></span></a>
+              <ul class="dropdown-menu nav-dropdown-menu">
+                <li><a href="{% url 'notice:notice_list' %}">공지사항</a></li>
+                <li><a href="{% url 'weekly:weekly_list' %}">본당주보</a></li>
+                <li><a href="{% url 'schedule:schedule' %}">본당일정</a></li>
+                <li><a href="{% url 'gallery:gallery_list' %}">행사사진</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown nav-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">참여마당 <span class="caret"></span></a>
+              <ul class="dropdown-menu nav-dropdown-menu">
+                <li><a href="{% url 'picture:picture_list' %}">우리들 사진</a></li>
+                <li><a href="{% url 'video:video_list' %}">우리들 영상</a></li>
+                <li><a href="{% url 'flower:flower_list' %}">제대꽃</a></li>
+                <li><a href="{% url 'QnA:QnA_list' %}">묻고 답하기</a></li>
+                <li><a href="{% url 'freeboard:freeboard_list' %}">자유게시판</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown nav-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">가톨릭소개 <span class="caret"></span></a>
+              <ul class="dropdown-menu nav-dropdown-menu">
+                <li><a href="http://info.catholic.or.kr/missa/" target="_blank">매일미사</a></li>
+                <li><a href="http://aos.catholic.or.kr/" target="_blank">서울 대교구</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div> -->
+    </div>
 
-      <div class="header" id="header">
+    <!-- <nav class="top-nav navbar navbar-fixed-top navbar-default" id="navbar2">
+  		<div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-ul" aria-expanded="false" aria-controls="navbar-ul-mobile">
+    			<span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="{ % url 'post:post_list' %}" class="navbar-brand">
+          <img src="{% static 'img/logo.png' %}" alt="" style="width: 100px; height: 50px;">
+        </a>
+  		</div>
 
-        <a class="logo" href="{% url 'post:main_page' %}" style="padding-top: 3px; margin-left: 10px; float:left;"><img src="{% static 'img/logo.png' %}" alt="" style="width: 166px; height: 75px;"></a>
-        <ul class="pull-right" id="login" style="padding-right:80px;">
-          {% if not user.is_authenticated %}
-            <li style="float:left;">
+  		<div id="navbar-ul-mobile" class="collapse navbar-collapse">
+  			<ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
+    				<li><a href="{% url 'post:pastoral_counsil' %}">본당단체</a></li>
+    				<li><a href="{% url 'notice:notice_list' %}">본당소식</a></li>
+            <li><a href="{% url 'picture:picture_list' %}">참여마당</a></li>
+          {% else %}
+            <li>
               <a href="{% url "login" %}?next={{ request.path }}" >
                 <i class="fas fa-user-plus"></i>
                 로그인
               </a>
             </li>
-            <li style="float:left; margin-left:20px;">
-              <button id="search" type="button" name="button" style="border:none; padding-top:0px;">
-                <!-- <a href="{% url 'post:post_search' %}"> -->
-                  <i class="glyphicon glyphicon-search"></i>
-                <!-- </a> -->
-              </button>
-            </li>
-          {% else %}
-            <li style="float:left;">
-              <a href="{% url "profile" %}">
-                <i class="fas fa-user"></i>
-                {{ request.user.last_name }}{{ request.user.first_name }} 님
-              </a>
-            </li>
-            <li style="float:left; margin-left:20px;">
-              <button id="search" type="button" name="button" style="border:none; padding-top:0px;">
-                <!-- <a href="{% url 'post:post_search' %}"> -->
-                  <i class="glyphicon glyphicon-search"></i>
-                <!-- </a> -->
-              </button>
-            </li>
           {% endif %}
-        </ul>
-      </div>
+  			</ul>
+  		</div>
+    </nav> -->
 
-      <div class="navbar" id="navbar">
-        <div class="container">
-          <div class="row">
-
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-ul" aria-expanded="false" aria-controls="navbar-ul">
-          			<span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-        		</div>
-
-            <ul class="nav navbar-nav collapse navbar-collapse" id="navbar-ul">
-              <li class="dropdown"><a href="{% url 'post:main_page' %}" style='color:white'>HOME</a></li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소개 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
-                  <li><a href="{% url 'post:father_sister' %}">신부님/수녀님</a></li>
-                  <li><a href="{% url 'post:location' %}">오시는길</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'post:pastoral_counsil' %}">사목협의회</a></li>
-                  <li><a href="{% url 'group:group_list' %}">단체 일정</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소식 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'notice:notice_list' %}">공지사항</a></li>
-                  <li><a href="{% url 'weekly:weekly_list' %}">본당주보</a></li>
-                  <li><a href="{% url 'schedule:schedule' %}">본당일정</a></li>
-                  <li><a href="{% url 'gallery:gallery_list' %}">행사사진</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">참여마당 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'picture:picture_list' %}">우리들 사진</a></li>
-                  <li><a href="{% url 'video:video_list' %}">우리들 영상</a></li>
-                  <li><a href="{% url 'QnA:QnA_list' %}">묻고 답하기</a></li>
-                  <li><a href="{% url 'freeboard:freeboard_list' %}">자유게시판</a></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">가톨릭소개 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="http://info.catholic.or.kr/missa/" target="_blank">매일미사</a></li>
-                  <li><a href="http://aos.catholic.or.kr/" target="_blank">서울 대교구</a></li>
-                </ul>
-              </li>
-            </ul>
+    <div class="modal fade" id="modal-searchform-modal" tableindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" style="text-align: center; ">전체 게시판 검색</h3>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="padding-left:200px;">
+            <form action="{% url 'post:post_search' %}" method="post">
+              {% csrf_token %}
+              <span class="input-group-btn">
+                {{ search_form.search_word }}
+              </span>
+              <span class="input-group-btn">
+                <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </span>
+            </form>
           </div>
         </div>
       </div>
-
-      <!-- <nav class="top-nav navbar navbar-fixed-top navbar-default" id="navbar2">
-    		<div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-ul" aria-expanded="false" aria-controls="navbar-ul-mobile">
-      			<span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="{ % url 'post:post_list' %}" class="navbar-brand">
-            <img src="{% static 'img/logo.png' %}" alt="" style="width: 100px; height: 50px;">
-          </a>
-    		</div>
-
-    		<div id="navbar-ul-mobile" class="collapse navbar-collapse">
-    			<ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
-              <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
-      				<li><a href="{% url 'post:pastoral_counsil' %}">본당단체</a></li>
-      				<li><a href="{% url 'notice:notice_list' %}">본당소식</a></li>
-              <li><a href="{% url 'picture:picture_list' %}">참여마당</a></li>
-            {% else %}
-              <li>
-                <a href="{% url "login" %}?next={{ request.path }}" >
-                  <i class="fas fa-user-plus"></i>
-                  로그인
-                </a>
-              </li>
-            {% endif %}
-    			</ul>
-    		</div>
-      </nav> -->
-
-      <div class="modal fade" id="modal-searchform-modal" tableindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3 class="modal-title" style="text-align: center; ">전체 게시판 검색</h3>
-              <button type="button" class="close" data-dismiss="modal">
-                <span>&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" style="padding-left:200px;">
-              <form action="{% url 'post:post_search' %}" method="post">
-                {% csrf_token %}
-                <span class="input-group-btn">
-                  {{ search_form.search_word }}
-                </span>
-                <span class="input-group-btn">
-                  <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
-                      <i class="glyphicon glyphicon-search"></i>
-                  </button>
-                </span>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
 
     {% if messages %}
       <div class="container">
@@ -289,7 +263,7 @@
 
       $(document).ready(function(){
 
-        $('.dropdown,.dropdown-menu').hover(function(){
+        $('.nav-dropdown,.nav-dropdown-menu').hover(function(){
 
           if($(window).width()>=768){
             $(this).addClass('open').trigger('shown.bs.dropdown', relatedTarget)

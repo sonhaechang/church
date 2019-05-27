@@ -1,0 +1,88 @@
+<div id="comment-list-{{ post.pk }}">
+  {% for comment in comments %}
+    <table class="table table-hover">
+      <tr>
+        <td>
+        <p style="margin-left:20px;">
+          <i class="fas fa-user"></i>
+          <strong>{{ comment.user.last_name }}{{ comment.user.first_name }}</strong>
+          <small style="margin-left:10px; cursor:pointer;">
+            <span class="replies-btn glyphicon glyphicon-share-alt" style="color:#555;"></span>
+            <span class="replies-btn replies-btn-{{ comment.pk }}" name="{{ comment.pk }}">답글</span>
+            <span class="text-danger replies-delete replies-delete-{{ comment.pk }}" name="{{ comment.pk }}" style="display:none;">답글 닫기</span>
+          </small>
+          <small class="pull-right" style="margin-right:20px;">
+            <span class="glyphicon glyphicon-time"></span>
+            {{ comment.updated_at }}
+          </small>
+        </p>
+        <p style="margin-left:20px;">
+          {{ comment.comment }}
+          {% if comment.user == request.user %}
+            <a href="{{ comment.get_delete_url }}"
+              style="margin-right:20px;"
+              class="pull-right text-danger ajax-post-confirm"
+              data-target-id="comment-{{ comment.pk }}"
+              data-message="삭제하시겠습니까?">
+                <small>삭제</small>
+            </a>
+          {% endif %}
+
+            <div class="replies-form-{{ comment.pk }}" id="add-replies-{{ comment.pk }}" style="display:none;">
+              <table class="table table-hover">
+                <tr>
+                  <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
+                  <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-replies" value="{{ flower.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
+                </tr>
+              </table>
+            </div>
+
+            {% if comment.replies.count != 0 %}
+              <small>
+                <a class="show-comment show-comment-{{ comment.pk }}" value="{{ comment.pk }}" href="#" style="margin-left:20px;">
+                  답글 {{ comment.replies.count }}개 보기
+                  <span class="glyphicon glyphicon-chevron-down"></span>
+                </a>
+              </small>
+              <small>
+                <a class="hide-comment hide-comment-{{ comment.pk }}" value="{{ comment.pk }}" href="#" style="margin-left:20px; display:none;">
+                  답글 숨기기
+                  <span class="glyphicon glyphicon-chevron-up"></span>
+                </a>
+              </small>
+            {% endif %}
+
+            <div id="replies-list-{{ comment.pk }}" style="display:none;">
+              {% for replay in comment.replies.all %}
+                <span class="replies">
+                  <p style="margin-left:40px; margin-top:20px;">
+                    L
+                    <i class="fas fa-user"></i>
+                    <strong>{{ replay.user.last_name }}{{ replay.user.first_name }}</strong>
+                    <small class="pull-right" style="margin-right:40px;">
+                      <span class="glyphicon glyphicon-time"></span>
+                      {{ replay.updated_at }}
+                    </small>
+                  </p>
+                  <p style="margin-left:55px;">
+                    {{ replay.comment }}
+                    {% if replay.user == request.user %}
+                      <a href="{{ replay.get_delete_url }}"
+                      style="margin-right:40px;"
+                      class="pull-right text-danger ajax-post-confirm2"
+                      data-target-id="comment-{{ replay.pk }}"
+                      data-message="삭제하시겠습니까?">
+                        <small>삭제</small>
+                      </a>
+                    {% endif %}
+                  </p>
+                </span>
+              {% endfor %}
+            </div>
+
+        </p>
+        </td>
+      </tr>
+    </table>
+  {% endfor %}
+</div>

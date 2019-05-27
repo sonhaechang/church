@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django_summernote import models as summer_model
 
 # Create your models here.
 class Gallery(models.Model):
@@ -25,6 +26,43 @@ class Gallery(models.Model):
 
     def get_next_post(self):
             return self.get_next_by_updated_at()
+
+    def photo_save(self):
+        image = re.search(r'([0-9])\d+\-([0-9])\d+\-([0-9])\d+\/([A-Za-z0-9])\w+\-([A-Za-z0-9])\w+\-([A-Za-z0-9])\w+([A-Za-z0-9])\w+\-([A-Za-z0-9])\w+\-([A-Za-z0-9])\w+\.(?:jpg|gif|png|JPG|jpeg|ico)',
+        self.content)
+        if image:
+            file = image.group()
+            file = '/django-summernote/' + file
+        if not file:
+            return
+
+        Thumbnail.objects.create(picture=self, thumbnail=file)
+
+
+    @property
+    def get_summernote_file(self):
+        # print(dir(self.content))
+        attachments = []
+        try:
+            attachments = summer_model.Attachment.objects.all()
+        except:
+            pass
+
+        attachment = []
+        for i in range(len(attachments)):
+            attachment.append(attachments[i])
+        return attachment
+
+
+class Thumbnail(models.Model):
+    gallery = models.ForeignKey(Gallery, on_delete=models.CASCADE)
+    thumbnail = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        ordering = ['-id',]
+
+    def __str__(self):
+        return self.thumbnail
 
 
 class Photo(models.Model):

@@ -125,3 +125,7 @@ def post_search(request):
     else:
         form = SearchForm()
     return render(request, 'post/search_form.html',{'search_form': form})
+
+
+def history(request):
+    return render(request, 'post/history.html')

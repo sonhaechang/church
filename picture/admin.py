@@ -5,9 +5,9 @@ from django_summernote.admin import SummernoteModelAdmin
 
 # Register your models here.
 
-class PictureInline(admin.TabularInline):
-    model = Photo
-    raw_id_fields = ['picture']
+# class PictureInline(admin.TabularInline):
+#     model = Photo
+#     raw_id_fields = ['picture']
 
 @admin.register(Picture)
 class Picture(SummernoteModelAdmin):
@@ -20,14 +20,14 @@ class Picture(SummernoteModelAdmin):
     # inlines = [PictureInline]
 
 
-@admin.register(Photo)
-class Photo(admin.ModelAdmin):
-    list_display = ['id', 'picture', 'photo']
+# @admin.register(Photo)
+# class Photo(admin.ModelAdmin):
+#     list_display = ['id', 'picture', 'photo']
 
 @admin.register(Thumbnail)
 class Thumbnail(admin.ModelAdmin):
     list_display = ['id', 'picture', 'thumbnail']
 
 @admin.register(PictureComment)
-class gallerycomment(admin.ModelAdmin):
+class picturecomment(admin.ModelAdmin):
     list_display = ['user', 'picture', 'created_at', 'updated_at']

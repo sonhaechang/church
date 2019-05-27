@@ -21,6 +21,7 @@ from django.urls import path, re_path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^accounts/', include('accounts.urls')),
+    re_path(r'^flower/', include('flower.urls')),
     re_path(r'^freeboard/', include('freeboard.urls', namespace='freeboard')),
     path('summernote/', include('django_summernote.urls')),
     re_path(r'^gallery/', include('gallery.urls', namespace='gallery')),
@@ -35,4 +36,5 @@ urlpatterns = [
 
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
