@@ -99,10 +99,10 @@ pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'daechi4',
-        'USER': 'shc5529',
-        'PASSWORD': 'shcsaw5529',
-        'HOST': 'daechi4db.cfghabwko9re.ap-northeast-2.rds.amazonaws.com',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '3306',
     }
 }
@@ -145,8 +145,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-AWS_ACCESS_KEY_ID = 'AKIAX6TKP5FTUENWIRFN'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = 'daechi4'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
