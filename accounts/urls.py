@@ -10,8 +10,9 @@ urlpatterns = [
     #     kwargs={
     #         'template_name': 'accounts/login_form.html'
     #     }),
-    re_path(r'^logout/$', auth_views.logout, name='logout',
-        kwargs={'next_page': settings.LOGIN_URL}),
+    # re_path(r'^logout/$', auth_views.logout, name='logout',
+    #     kwargs={'next_page': settings.LOGIN_URL}),
+    re_path(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     re_path(r'^profile/$', views.profile, name='profile'),
     re_path(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
     re_path(r'^profile/password/$', views.change_password, name='change_password'),

@@ -93,7 +93,6 @@ def flower_new(request):
             flower = flower_form.save(commit=False)
             flower.user = request.user
             flower.save()
-            flower.photo_save()
             return redirect('flower:flower_list')
     else:
         flower_form = FlowerForm()
@@ -114,9 +113,6 @@ def flower_edit(request, pk):
                 flower = flower_form.save(commit=False)
                 flower.user = request.user
                 flower.save()
-                thumbnail = flower.thumbnail_set.all()
-                thumbnail.delete()
-                flower.photo_save()
                 return redirect('flower:flower_detail', flower.pk)
         else:
             flower_form = FlowerForm(instance=flower)

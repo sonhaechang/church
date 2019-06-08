@@ -8,158 +8,155 @@
 {% endblock %}
 
 {% block content %}
-
-  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
-    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
-  </div> -->
-
   <div class="container">
     <div class="row">
 
-      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
-        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron3.html" %}
       </div>
 
-      <!-- col-xs-4 col-sm-2 -->
-      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
-          <h3>본당소식</h3>
-          <a href="{% url 'notice:notice_list' %}" class="list-group-item">공지사항</a>
-          <a href="{% url 'weekly:weekly_list' %}" class="list-group-item">본당주보</a>
-          <a href="{% url 'schedule:schedule' %}" class="list-group-item">본당일정</a>
-          <a href="{% url 'gallery:gallery_list' %}" class="list-group-item active">행사사진</a>
-        </div>
-      </div>
-        <!--/.sidebar-offcanvas-->
+      <div class="col-lg-12 col-md-12" id="web-content">
 
-      <div class="col-md-10" id="content">
-
-        <h3>행사사진</h3>
-        <hr>
-
-        <div class="input-group col-md-4">
-          <form action="" method="get">
-            {% csrf_token %}
-            <span class="input-group-btn">
-              <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
-            </span>
-            <span class="input-group-btn">
-              <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
-                  <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </span>
-          </form>
+        <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+          {% include "gallery/sidebar.html" %}
         </div>
 
-        <div style="margin-top:70px;">
-          <div class="row">
-          {% for gallery in gallery_list %}
-            <!-- <div class="row"> -->
-              <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                  {% if gallery.photo_set.all %}
-                    {% for p in gallery.photo_set.all|slice:":1" %}
-                      <a href="{% url 'gallery:gallery_detail' gallery.pk %}" role="button">
-                        <img src="{{ p.photo.url }}" alt="..." style="height:200px;">
-                      </a>
-                    {% endfor %}
-                  {% endif %}
-                  <div class="caption">
-                    <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:black;" role="button">
-                      <h4>{{ gallery.title }}</h4>
-                    </a>
-                    <hr style="margin-bottom:10px;">
+        <div class="col-lg-10 col-md-10" id="content">
 
-                    <p>
-                      <small style="margin-right:10px; margin-left:10px;">
-                        <i class="fas fa-user"></i>
-                        {{ gallery.user.last_name }}{{ gallery.user.first_name }}
-                      </small>
-                      <small style="color:gray; margin-right:10px;"><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small>
-                      <small style="color:gray; margin-right:10px;"><span class="glyphicon glyphicon-eye-open"></span> {{ gallery.hits }}</small>
-                    </p>
+          <h3>행사사진</h3>
+          <hr>
 
-                    <hr style="margin-bottom:10px; margin-top:10px;">
-                    <!-- <p><a href="{% url 'gallery:gallery_detail' gallery.pk %}" class="btn btn-default btn btn-block" role="button">보기</a></p> -->
+          <div class="input-group col-md-4" style="float: left;">
+            <form action="" method="get">
+              {% csrf_token %}
+              <span class="input-group-btn">
+                <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
+              </span>
+              <span class="input-group-btn">
+                <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </span>
+            </form>
+          </div>
+
+          {% if user.is_authenticated and user.is_superuser %}
+            <a href="{% url 'gallery:gallery_new' %}" class="pull-right btn btn-info" style="float: left; background:#555; border-color:#555;">글쓰기</a>
+          {% endif %}
+
+          <div style="margin-top:130px;">
+            <div class="row">
+              {% for gallery in gallery_list %}
+                <!-- <div class="row"> -->
+                  <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                      {% if gallery.thumbnail_set.all %}
+                        {% for t in gallery.thumbnail_set.all %}
+                          <a href="{% url 'gallery:gallery_detail' gallery.pk %}">
+                            <img src="https://daechi4.s3.ap-northeast-2.amazonaws.com/media{{ t }}" alt="..." style="height:200px;">
+                          </a>
+                        {% endfor %}
+                      {% endif %}
+
+                      <div class="caption">
+                        <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:black;" role="button">
+                          <div style="height:30px;">
+                            <h4>{{ gallery.title }}</h4>
+                          </div>
+                        </a>
+                        <hr style="margin-bottom:10px;">
+
+                        <p>
+                          <small style="margin-right:10px; margin-left:10px;">
+                            <i class="fas fa-user"></i>
+                            {{ gallery.user.last_name }}{{ gallery.user.first_name }}
+                          </small>
+                          <small style="color:gray; margin-right:10px;"><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small>
+                          <small style="color:gray; margin-right:10px;"><span class="glyphicon glyphicon-eye-open"></span> {{ gallery.hits }}</small>
+                        </p>
+
+                        <hr style="margin-bottom:10px; margin-top:10px;">
+                        <!-- <p><a href="{% url 'gallery:gallery_detail' gallery.pk %}" class="btn btn-default btn btn-block" role="button">보기</a></p> -->
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            <!-- </div> -->
-          {% endfor %}
+              {% endfor %}
+            </div>
 
-          {# Pagination #}
-
-            <nav class="text-center col-md-12 col-sm-12">
-              <ul class="pagination">
-                {% if gallery_list.has_previous %}
-  		            <li><a href="?page={{ gallery_list.previous_page_number }}">&laquo;</a></li>
-                {% else %}
-  		            <li class = "disabled"><span>&laquo;</span></li>
-                {% endif %}
-
-    		        {% if gallery_list.number > 2  %}
-    		        	<li><a href="?page={{ 1 }}"> 1 </a></li>
-    		        	<li ><span>...<span class="sr-only">...</span></span></li>
-    		        {% endif %}
-    		        {% for i in page_range %}
-    		          {% if gallery_list.number == i %}
-    		            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-    		          {% else %}
-    		            <li><a href="?page={{ i }}">{{ i }}</a></li>
-    		          {% endif %}
-  		          {% endfor %}
-
-    		        {% if gallery_list.number < max_index %}
-    		      		<li ><span>...<span class="sr-only">...</span></span></li>
-    		        	<li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
-    		        {% endif %}
-
-    		        {% if gallery_list.has_next %}
-    		            <li><a href="?page={{ gallery_list.next_page_number }}">&raquo;</a></li>
-    		        {% else %}
-    		            <li class="disabled"><span>&raquo;</span></li>
-    		        {%endif %}
-              </ul>
-            </nav>
-
+            <div class="text-center">
+              {% include "gallery/pagination.html" %}
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- <nav class="text-center">
-        <ul class="pagination">
-          {% if result_list.has_previous %}
-            <li><a href="?page={{ result_list.previous_page_number }}">&laquo;</a></li>
-          {% else %}
-            <li class = "disabled"><span>&laquo;</span></li>
-          {% endif %}
+      <div id="mobile-content" class="row" style="text-align:center;">
+        <div class="mobile-header-wrap">
+          {% include "gallery/mobile-header.html" %}
+        </div>
 
-          {% if result_list.number > 2  %}
-            <li><a href="?page={{ 1 }}"> 1 </a></li>
-            <li ><span>...<span class="sr-only">...</span></span></li>
-          {% endif %}
-          {% for i in page_range %}
-            {% if result_list.number == i %}
-              <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-            {% else %}
-              <li><a href="?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-          {% endfor %}
+        <div class="col-sm-12" style="margin-top:30px;">
 
-          {% if result_list.number < max_index %}
-            <li ><span>...<span class="sr-only">...</span></span></li>
-            <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
-          {% endif %}
+          <div class="col-sm-12">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">행사사진</th>
+                  <th style="text-align:right;">
+                    {% if user.is_authenticated and user.is_superuser %}
+                      <a href="{% url 'gallery:gallery_new' %}" style="color: #5F5F5F;">글쓰기</a>
+                    {% endif %}
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          
+          <div class="row">
 
-          {% if result_list.has_next %}
-              <li><a href="?page={{ result_list.next_page_number }}">&raquo;</a></li>
-          {% else %}
-              <li class="disabled"><span>&raquo;</span></li>
-          {%endif %}
-        </ul>
-      </nav> -->
+            {% for gallery in gallery_list %}
+              <!-- <div class="row"> -->
+                <div class="col-sm-6 col-md-4">
+                  <div class="thumbnail">
+                    {% if gallery.thumbnail_set.all %}
+                      {% for t in gallery.thumbnail_set.all %}
+                        <a href="{% url 'gallery:gallery_detail' gallery.pk %}">
+                          <img src="https://daechi4.s3.ap-northeast-2.amazonaws.com/media{{ t }}" alt="..." style="height:200px;">
+                        </a>
+                      {% endfor %}
+                    {% endif %}
 
+                    <div class="caption">
+                      <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:black;" role="button">
+                        <div style="height:30px;">
+                          <h4>{{ gallery.title }}</h4>
+                        </div>
+                      </a>
+                      <hr style="margin-bottom:10px;">
+
+                      <p>
+                        <small style="margin-right:10px; margin-left:10px;">
+                          <i class="fas fa-user"></i>
+                          {{ gallery.user.last_name }}{{ gallery.user.first_name }}
+                        </small>
+                        <small style="color:gray; margin-right:10px;"><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small>
+                        <small style="color:gray; margin-right:10px;"><span class="glyphicon glyphicon-eye-open"></span> {{ gallery.hits }}</small>
+                      </p>
+
+                      <hr style="margin-bottom:10px; margin-top:10px;">
+                      <!-- <p><a href="{% url 'gallery:gallery_detail' gallery.pk %}" class="btn btn-default btn btn-block" role="button">보기</a></p> -->
+                    </div>
+                  </div>
+                </div>
+            {% endfor %}
+          </div>
+
+          <div class="text-center">
+            {% include "gallery/pagination.html" %}
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

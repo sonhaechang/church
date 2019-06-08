@@ -8,35 +8,29 @@
 {% endblock %}
 
 {% block content %}
-
-  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
-    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
-  </div> -->
-
   <div class="container">
     <div class="row">
 
-      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
-        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron3.html" %}
       </div>
 
-      <!-- col-xs-4 col-sm-2 -->
       <div class="col-md-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
-          <h3>참여마당</h3>
-          <a href="{% url 'picture:picture_list' %}" class="list-group-item">우리들 사진</a>
-          <a href="{ % url 'post:father_sister' %}" class="list-group-item">우리들 영상</a>
-          <a href="{% url 'flower:flower_list' %}" class="list-group-item active">제대꽃</a>
-          <a href="{% url 'QnA:QnA_list' %}" class="list-group-item">묻고 답하기</a>
-          <a href="{% url 'freeboard:freeboard_list' %}" class="list-group-item">자유게시판</a>
+        {% include "flower/sidebar.html" %}
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center;">
+        <div class="mobile-header-wrap">
+          {% include "flower/mobile-header.html" %}
         </div>
       </div>
 
-      <!-- <div class="col-md-10" style="border: 1px solid #f4f4f4"> -->
-      <div class="col-md-10" id="content">
+      <div class="col-lg-10 col-md-10" id="content">
 
-        <h3>제대꽃</h3>
-        <hr>
+        <div id="web-content">
+          <h3>제대꽃</h3>
+          <hr>
+        </div>
 
         <div style="margin-top:70px;">
 

@@ -6,35 +6,30 @@
 {% endblock %}
 
 {% block content %}
-
-  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
-    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
-  </div> -->
-
   <div class="container">
     <div class="row">
 
-      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
-        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron2.html" %}
       </div>
 
-      <!-- col-xs-4 col-sm-2 -->
       <div class="col-md-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
-          <h3>본당단체</h3>
-          <a href="{% url 'post:pastoral_counsil' %}" class="list-group-item">사목협의회</a>
-          <a href="{% url 'group:group_list' %}" class="list-group-item active">단체 일정</a>
+        {% include "group/sidebar.html" %}
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center; margin-bottom:30px;">
+        <div class="mobile-header-wrap">
+          {% include "group/mobile-header.html" %}
         </div>
       </div>
-        <!--/.sidebar-offcanvas-->
 
-      <div class="col-md-10" id="content">
+      <div class="col-lg-10 col-md-10 col-sm-12" id="content">
 
         <h3>{{ group.title }}</h3>
         <hr style="margin-bottom:10px;">
         <span style="margin-left:10px;">
           <i class="fas fa-user"></i>
-          <strong>{{ group.user.username }}</strong>
+          <strong>{{ group.user.last_name }}{{ group.user.first_name }}</strong>
         </span>
 
         <span style="margin-left:20px;">
@@ -47,7 +42,7 @@
         {% if group.user == request.user %}
           <span class="dropdown pull-right" style="margin-right:20px; cursor:pointer;">
             <!-- <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"> -->
-              <span class="fas fa-cog" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"></span>
+              <span class="glyphicon glyphicon-cog" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"></span>
               <!-- <span class="caret"></span>
             </button> -->
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="background-color: #fff;">
@@ -144,92 +139,6 @@
         {% if group.groupcomment_set.all %}
           <div id="comments-div">
             {% include "group/comment_form_ajax.html" %}
-            <!-- {% for comment in comments %}
-              <table class="table table-hover">
-                <tr>
-                  <td>
-                  <p style="margin-left:20px;">
-                    <i class="fas fa-user"></i>
-                    <strong>{{ comment.user.last_name }}{{ comment.user.first_name }}</strong>
-                    <small style="margin-left:10px; cursor:pointer;">
-                      <span class="replies-btn glyphicon glyphicon-share-alt" style="color:#555;"></span>
-                      <span class="replies-btn replies-btn-{{ comment.pk }}" name="{{ comment.pk }}">답글</span>
-                      <span class="text-danger replies-delete replies-delete-{{ comment.pk }}" name="{{ comment.pk }}" style="display:none;">답글 닫기</span>
-                    </small>
-                    <small class="pull-right" style="margin-right:20px;">
-                      <span class="glyphicon glyphicon-time"></span>
-                      {{ comment.updated_at }}
-                    </small>
-                  </p>
-                  <p style="margin-left:20px;">
-                    {{ comment.comment }}
-                    {% if comment.user == request.user %}
-                      <a href="{{ comment.get_delete_url }}"
-                        style="margin-right:20px;"
-                        class="pull-right text-danger ajax-post-confirm"
-                        data-target-id="comment-{{ comment.pk }}"
-                        data-message="삭제하시겠습니까?">
-                          <small>삭제</small>
-                      </a>
-                    {% endif %}
-
-                      <div class="replies-form-{{ comment.pk }}" id="add-replies-{{ comment.pk }}" style="display:none;">
-                        <table class="table table-hover">
-                          <tr>
-                            <td style="padding-top:20px; padding-right:0px;">{{ form.comment }}</td>
-                            <td style="padding-top:20px; padding-left:0px;"><button class="btn btn-default add-replies" value="{{ group.pk }}" name="{{ comment.id }}" style="height:75px; width:75px;">댓글작성</button></td>
-                          </tr>
-                        </table>
-                      </div>
-
-                      {% if comment.replies.count != 0 %}
-                        <small>
-                          <a class="show-comment show-comment-{{ comment.pk }}" value="{{ comment.pk }}" href="#" style="margin-left:20px;">
-                            답글 {{ comment.replies.count }}개 보기
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                          </a>
-                        </small>
-                        <small>
-                          <a class="hide-comment hide-comment-{{ comment.pk }}" value="{{ comment.pk }}" href="#" style="margin-left:20px; display:none;">
-                            답글 숨기기
-                            <span class="glyphicon glyphicon-chevron-up"></span>
-                          </a>
-                        </small>
-                      {% endif %}
-
-                      <div id="replies-list-{{ comment.pk }}" style="display:none;">
-                        {% for replay in comment.replies.all %}
-                          <span class="replies">
-                            <p style="margin-left:40px; margin-top:20px;">
-                              L
-                              <i class="fas fa-user"></i>
-                              <strong>{{ replay.user.last_name }}{{ replay.user.first_name }}</strong>
-                              <small class="pull-right" style="margin-right:40px;">
-                                <span class="glyphicon glyphicon-time"></span>
-                                {{ replay.updated_at }}
-                              </small>
-                            </p>
-                            <p style="margin-left:55px;">
-                              {{ replay.comment }}
-                              {% if replay.user == request.user %}
-                                <a href="{{ replay.get_delete_url }}"
-                                style="margin-right:40px;"
-                                class="pull-right text-danger ajax-post-confirm2"
-                                data-target-id="comment-{{ replay.pk }}"
-                                data-message="삭제하시겠습니까?">
-                                  <small>삭제</small>
-                                </a>
-                              {% endif %}
-                            </p>
-                          </span>
-                        {% endfor %}
-                      </div>
-
-                  </p>
-                  </td>
-                </tr>
-              </table>
-            {% endfor %} -->
           </div>
         {% else %}
           <hr>

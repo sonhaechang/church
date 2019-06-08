@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'freeboard',
     'gallery',
     'group',
+    'main',
     'notice',
-    'post',
     'picture',
     'QnA',
     'schedule',
@@ -84,7 +84,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mysite.context_processors.church',
-                'post.context_processors.default',
+                'main.context_processors.default',
             ],
         },
     },
@@ -106,7 +106,12 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
@@ -161,7 +166,7 @@ AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_USE_SSL = True
 
 # STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'mysite', 'static'),
 ]
@@ -175,6 +180,9 @@ LOGIN_REDIRECT_URL = '/accounts/profile/'
 LOGOUT_REDIRECT_URL = None
 
 NAVER_MAP_CLIENT_ID = "gKIcUGrQgLmHCi4t7Kb8"
+
+SESSION_COOKIE_AGE = 1800
+SESSION_SAVE_EVERY_REQUEST = True
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

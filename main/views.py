@@ -2,13 +2,14 @@ from django.conf import settings
 from django.shortcuts import render
 from notice.models import Notice
 from weekly.models import Weekly
-from gallery.models import Gallery
+from gallery.models import Gallery, Thumbnail
 from picture.models import Picture, Thumbnail
 from freeboard.models import Freeboard
+from flower.models import Flower
 from group.models import Group
 from QnA.models import QnA
 from video.models import Video
-from post.forms import SearchForm
+from main.forms import SearchForm
 from django.db.models import Q
 # from django.views.generic import ListView
 
@@ -20,7 +21,7 @@ def main_page(request):
     picture = Picture.objects.all()
     form = SearchForm()
 
-    return render(request, 'post/main.html', {
+    return render(request, 'main/main.html', {
         'notice_list': notice,
         'weekly_list': weekly,
         'gallery_list': gallery,
@@ -31,19 +32,23 @@ def main_page(request):
 
 
 def church_info(request):
-    return render(request, 'post/church_info.html')
+    return render(request, 'main/church_info.html')
 
 
 def father_sister(request):
-    return render(request, 'post/father_sister.html')
+    return render(request, 'main/father_sister.html')
 
 
 def location(request):
-    return render(request, 'post/location.html')
+    return render(request, 'main/location.html')
+
+
+def mass_time(request):
+    return render(request, 'main/mass_time.html')
 
 
 def pastoral_counsil(request):
-    return render(request, 'post/pastoral_counsil.html')
+    return render(request, 'main/pastoral_counsil.html')
 
 
 def post_search(request):
@@ -104,6 +109,8 @@ def post_search(request):
             # if video.exists():
             #     for i in range(len(video)):
             #         objects_list.append(video[i])
+            flower = Flower.objects.filter(Q(title__icontains=schWord) |
+                Q(content__icontains=schWord) | Q(user__last_name__icontains=last, user__first_name__icontains=first)).distinct()
 
 
 
@@ -115,17 +122,22 @@ def post_search(request):
                 'gallery_list': gallery,
                 'picture_list': picture,
                 'freeboard_list': freeboard,
+                'flower': flower,
                 'group_list': group,
                 # 'QnA_list': QnA,
                 'video_list': video,
                 'search_term': schWord,
                 'objects_list': objects_list,
             }
-            return render(request, 'post/search_form.html', context)
+            return render(request, 'main/search_form.html', context)
     else:
         form = SearchForm()
-    return render(request, 'post/search_form.html',{'search_form': form})
+    return render(request, 'main/search_form.html',{'search_form': form})
 
 
 def history(request):
-    return render(request, 'post/history.html')
+    return render(request, 'main/history.html')
+
+
+def pastoral_orientation(request):
+    return render(request, 'main/pastoral_orientation.html')

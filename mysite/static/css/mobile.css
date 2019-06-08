@@ -1,0 +1,106 @@
+#mobile-navbar {
+    background-color: #7a0039;
+    border: #7a0039;
+    display: none;
+}
+
+.navbar-default .navbar-toggle {
+    border: none;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+    background-color: #7a0039;
+}
+
+#mobile-content {
+  display: none;
+  margin-top: 70px;
+}
+
+#mobile-content .mobile-header{
+  background-color: #f4f4f4;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+#mobile-content .mobile-header ul{
+  list-style: none;
+  display: inline-block;
+  margin-top:20px;
+  padding-left: 20px;
+}
+
+#mobile-content .mobile-header ul li{
+  float: left;
+  margin-right: 10px;
+}
+
+#mobile-content .mobile-header ul li a{
+  color: #5A5A5A;
+}
+
+#mobile-content .mobile-header ul li a.active {
+  color: #7a0039;
+}
+
+.view-counter {
+  color: #5F5F5F;
+}
+
+.mobile-container {
+  display: none;
+}
+
+.mobile-checkerboard {
+  height: 135px;
+}
+
+.mobile-checkerboard .mobile-icon-wrap {
+  float: left;
+  height: 130px;
+  width: 50%;
+  padding-left:0px;
+}
+
+.mobile-checkerboard .mobile-icon-wrap .mobile-icon {
+  float: left;
+  height: 130px;
+  width: 150px;
+  background-color:#F4F4F4;
+  margin-left:5px;
+  border-radius:10px;
+}
+
+.mobile-checkerboard .mobile-icon-wrap .mobile-icon a {
+  color: #5A5A5A;
+}
+
+.mobile-checkerboard .mobile-icon-wrap .mobile-icon p {
+  text-align: center;
+}
+
+.mobile-checkerboard .mobile-icon-wrap .mobile-icon h3 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 736px) {
+  #header { display: none; }
+  #logo { display: none; }
+  #navbar { display: none; }
+  #mobile-navbar { display: block; }
+  #web-content { display: none; }
+  #jumbotron { display: none; }
+  #sidebar { display: none; }
+  #mobile-content { display: block; }
+  .mobile-container { display: block;}
+  .web-container { display: none;}
+
+  .table>thead>tr>th {
+    padding: 0px;
+  }
+  .carousel { height: 300px; }
+  .carousel .item { height: 300px;}
+  .carousel-inner > .item > img { height: 300px; }
+  #myCarousel { margin-top: 70px; }
+}

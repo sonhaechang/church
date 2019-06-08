@@ -1,7 +1,9 @@
+import re
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib import messages
-from gallery.models import Gallery, Photo, GalleryComment
+from gallery.models import Gallery, GalleryComment
 from gallery.forms import GalleryForm, CommentForm
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
@@ -40,7 +42,8 @@ def gallery_list(request):
         'page_range':page_range,
         'total_len':total_len,
         'max_index':max_index-2,
-        'q':q
+        'q':q,
+        'media': settings.MEDIA_URL,
     }
     return render(request, 'gallery/gallery.html', context)
 
@@ -81,6 +84,55 @@ def gallery_detail(request, pk):
         'comment_count': comment_count,
         'comments': comments
     })
+
+
+@login_required
+def gallery_new(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            gallery_form = GalleryForm(request.POST)
+            if gallery_form.is_valid():
+                gallery = gallery_form.save(commit=False)
+                gallery.user = request.user
+                gallery.save()
+                return redirect('gallery:gallery_list')
+        else:
+            gallery_form = GalleryForm()
+
+        return render(request, 'gallery/gallery_new.html', {
+            'gallery_form': gallery_form,
+        })
+
+
+@login_required
+def gallery_edit(request, pk):
+    gallery = get_object_or_404(Gallery, pk=pk)
+
+    if gallery.user == request.user:
+        if request.method == 'POST':
+            gallery_form = GalleryForm(request.POST, instance=gallery)
+            if gallery_form.is_valid():
+                gallery = gallery_form.save(commit=False)
+                gallery.user = request.user
+                gallery.save()
+                return redirect('gallery:gallery_detail', gallery.pk)
+        else:
+            gallery_form = GalleryForm(instance=gallery)
+
+        return render(request, 'gallery/gallery_edit.html', {
+            'gallery': gallery,
+            'gallery_form': gallery_form,
+        })
+
+
+@login_required
+def gallery_delete(request, pk):
+    gallery = get_object_or_404(Gallery, pk=pk)
+    if gallery.user == request.user:
+        if request.method == 'POST':
+            gallery.delete()
+            messages.success(request, '포스팅을 삭제했습니다.')
+            return redirect('gallery:gallery_list')
 
 
 @login_required

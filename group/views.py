@@ -1,8 +1,9 @@
 import os
 from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from group.models import Group, GroupComment
 from group.forms import GroupForm, CommentForm
@@ -84,6 +85,7 @@ def group_detail(request, pk):
 
 
 @login_required
+@permission_required('group.add_group', login_url=reverse_lazy('group:group_permission'))
 def group_new(request):
     if request.method == 'POST':
         form = GroupForm(request.POST, request.FILES)
@@ -176,3 +178,9 @@ def comment_delete(request, group_pk, pk):
             comment.delete()
             return redirect('group:group_list')
     return render(request, 'group/comment_delete.html', {'comment': comment})
+
+
+@login_required
+def group_permission(request):
+    group = Group.objects.all()
+    return render(request, 'group/permission.html', {'group': group})

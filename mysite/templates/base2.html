@@ -25,20 +25,23 @@
     <link href="{% static 'css/carousel.css' %}" rel="stylesheet">
     <link href="{% static 'css/sticky-footers.css' %}" rel="stylesheet">
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/mobile.css' %}" rel="stylesheet">
     <link href="{% static 'css/fullcalendar.print.css' %}" rel="stylesheet" media='print'>
     <link href="{% static 'css/fullcalendar/fullcalendar.css' %}" rel="stylesheet">
     <link href="{% static 'css/fullcalendar/fullcalendar.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/comment.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.4.1/css/all.css">
+    <!-- <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous"> -->
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
     {% block css %}{% endblock %}
-    <title>{% block title %}천주교대교구 대치4동성당{% endblock %}</title>
+    <title>{% block title %}대치4동성당{% endblock %}</title>
   </head>
   <body>
 
     <div class="header" id="header">
 
-      <a class="logo" href="{% url 'post:main_page' %}" style="padding-top: 3px; margin-left: 10px; float:left;"><img src="{% static 'img/logo_166.png' %}" alt="" style="width: 166px; height: 75px;"></a>
+      <a class="logo" href="{% url 'main:main_page' %}" style="padding-top: 3px; margin-left: 10px; float:left;"><img src="{% static 'img/logo_166.png' %}" alt="" style="width: 166px; height: 75px;"></a>
       <ul class="pull-right" id="login" style="padding-right:80px;">
         {% if not user.is_authenticated %}
           <li style="float:left;">
@@ -49,7 +52,7 @@
           </li>
           <li style="float:left; margin-left:20px;">
             <button id="search" type="button" name="button" class="btn btn-default" style="border:none; padding-top:0px;">
-              <!-- <a href="{% url 'post:post_search' %}"> -->
+              <!-- <a href="{% url 'main:post_search' %}"> -->
                 <i class="glyphicon glyphicon-search"></i>
               <!-- </a> -->
             </button>
@@ -63,7 +66,7 @@
           </li>
           <li style="float:left; margin-left:20px;">
             <button id="search" type="button" name="button" class="btn btn-default" style="border:none; padding-top:0px;">
-              <!-- <a href="{% url 'post:post_search' %}"> -->
+              <!-- <a href="{% url 'main:post_search' %}"> -->
                 <i class="glyphicon glyphicon-search"></i>
               <!-- </a> -->
             </button>
@@ -86,22 +89,24 @@
       		</div>
 
           <ul class="nav navbar-nav collapse navbar-collapse" id="navbar-ul">
-            <li class="dropdown"><a href="{% url 'post:main_page' %}" style='color:white'>HOME</a></li>
+            <li class="dropdown"><a href="{% url 'main:main_page' %}" style='color:white'>HOME</a></li>
 
             <li class="dropdown nav-dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당소개 <span class="caret"></span></a>
               <ul class="dropdown-menu nav-dropdown-menu">
-                <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
-                <li><a href="{% url 'post:history' %}">본당연혁</a></li>
-                <li><a href="{% url 'post:father_sister' %}">신부님/수녀님</a></li>
-                <li><a href="{% url 'post:location' %}">오시는길</a></li>
+                <li><a href="{% url 'main:church_info' %}">본당소개</a></li>
+                <li><a href="{% url 'main:history' %}">본당연혁</a></li>
+                <li><a href="{% url 'main:mass_time' %}">미사 및 성사</a></li>
+                <li><a href="{% url 'main:father_sister' %}">신부님/수녀님</a></li>
+                <li><a href="{% url 'main:location' %}">오시는길</a></li>
               </ul>
             </li>
 
             <li class="dropdown nav-dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">본당단체 <span class="caret"></span></a>
               <ul class="dropdown-menu nav-dropdown-menu">
-                <li><a href="{% url 'post:pastoral_counsil' %}">사목협의회</a></li>
+                <li><a href="{% url 'main:pastoral_counsil' %}">사목협의회</a></li>
+                <li><a href="{% url 'main:pastoral_orientation' %}">사목지향</a></li>
                 <li><a href="{% url 'group:group_list' %}">단체 일정</a></li>
               </ul>
             </li>
@@ -113,6 +118,7 @@
                 <li><a href="{% url 'weekly:weekly_list' %}">본당주보</a></li>
                 <li><a href="{% url 'schedule:schedule' %}">본당일정</a></li>
                 <li><a href="{% url 'gallery:gallery_list' %}">행사사진</a></li>
+                <li><a href="{% url 'flower:flower_list' %}">제대꽃</a></li>
               </ul>
             </li>
 
@@ -121,7 +127,6 @@
               <ul class="dropdown-menu nav-dropdown-menu">
                 <li><a href="{% url 'picture:picture_list' %}">우리들 사진</a></li>
                 <li><a href="{% url 'video:video_list' %}">우리들 영상</a></li>
-                <li><a href="{% url 'flower:flower_list' %}">제대꽃</a></li>
                 <li><a href="{% url 'QnA:QnA_list' %}">묻고 답하기</a></li>
                 <li><a href="{% url 'freeboard:freeboard_list' %}">자유게시판</a></li>
               </ul>
@@ -139,37 +144,45 @@
       </div>
     </div>
 
-    <!-- <nav class="top-nav navbar navbar-fixed-top navbar-default" id="navbar2">
+    <!-- mobile-nav -->
+    <nav class="top-nav navbar navbar-fixed-top navbar-default" id="mobile-navbar">
   		<div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-ul" aria-expanded="false" aria-controls="navbar-ul-mobile">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-ul-mobile" aria-expanded="false" aria-controls="navbar-ul-mobile">
     			<span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a href="{ % url 'post:post_list' %}" class="navbar-brand">
-          <img src="{% static 'img/logo.png' %}" alt="" style="width: 100px; height: 50px;">
+        <a href="{% url 'main:main_page' %}" class="navbar-brand">
+          대치4동 성당
         </a>
   		</div>
 
   		<div id="navbar-ul-mobile" class="collapse navbar-collapse">
   			<ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
-            <li><a href="{% url 'post:church_info' %}">본당소개</a></li>
-    				<li><a href="{% url 'post:pastoral_counsil' %}">본당단체</a></li>
-    				<li><a href="{% url 'notice:notice_list' %}">본당소식</a></li>
-            <li><a href="{% url 'picture:picture_list' %}">참여마당</a></li>
+             <li>
+               <a href="{% url "profile" %}">
+                 <i class="fas fa-user"></i>
+                 {{ request.user.last_name }}{{ request.user.first_name }} 님
+               </a>
+             </li>
+             <li><a href="{% url "logout" %}?next={{ request.path }}">로그아웃</a></li>
           {% else %}
             <li>
               <a href="{% url "login" %}?next={{ request.path }}" >
-                <i class="fas fa-user-plus"></i>
+                <!-- <i class="fas fa-user-plus"></i> -->
                 로그인
               </a>
             </li>
           {% endif %}
+          <li><a href="{% url 'main:church_info' %}">본당소개</a></li>
+          <li><a href="{% url 'main:pastoral_counsil' %}">본당단체</a></li>
+          <li><a href="{% url 'notice:notice_list' %}">본당소식</a></li>
+          <li><a href="{% url 'picture:picture_list' %}">참여마당</a></li>
   			</ul>
   		</div>
-    </nav> -->
+    </nav>
 
     <div class="modal fade" id="modal-searchform-modal" tableindex="-1">
       <div class="modal-dialog">
@@ -181,7 +194,7 @@
             </button>
           </div>
           <div class="modal-body" style="padding-left:200px;">
-            <form action="{% url 'post:post_search' %}" method="post">
+            <form action="{% url 'main:post_search' %}" method="post">
               {% csrf_token %}
               <span class="input-group-btn">
                 {{ search_form.search_word }}
@@ -210,7 +223,7 @@
       </div>
     {% endif %}
 
-    <div style="margin-top:-20px; margin-bottom: 20px;">
+    <div style="margin-top:-20px; margin-bottom: 100px;">
       <!-- margin-top:120px; -->
       <!-- <div class="row"> -->
         {% block content %}
@@ -221,11 +234,12 @@
       </button>
     </div>
 
-    <footer class="footer" style="height: 100px;">
+    <footer class="footer" style="height: 150px;">
       <div class="container">
-        <div style="margin-top: 25px;">
+        <div style="margin-top: 30px;">
           <p class="text-muted" ><strong style="color: #938062">천주교서울대교구 대치4동성당</strong> | 주소 : 서울특별시 강남구 삼성로71길 10 대치4동천주교 성당 | T. 02-3453-7810</p>
           <p class="text-muted">Copyright © 천주교서울대교구 대치4동성당. All Rights Reserved.</p>
+          <p class="text-muted"><small>본 사이트는 Chrome, Safari, Firefox에 최적화 되어있습니다.</small></p>
         </div>
       </div>
     </footer>

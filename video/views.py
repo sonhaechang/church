@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from video.models import Video, VideoComment
 from video.forms import VideoForm, CommentForm
@@ -84,29 +85,20 @@ def video_detail(request, pk):
 
 
 @login_required
+@permission_required('video.add_video', login_url=reverse_lazy('video:video_permission'))
 def video_new(request):
     if request.method == 'POST':
         video_form = VideoForm(request.POST)
-        # photo_form = PhotoForm(request.POST, request.FILES)
-        # if picture_form.is_valid() and photo_form.is_valid():
         if video_form.is_valid():
             video = video_form.save(commit=False)
             video.user = request.user
             video.save()
-
-            # for f in request.FILES.getlist("photo"):
-            #     Photo.objects.create(
-            #         picture=picture,
-            #         photo=f
-            #     )
             return redirect('video:video_detail', video.pk)
     else:
         video_form = VideoForm()
-        # photo_form = PhotoForm()
 
     return render(request, 'video/video_new.html', {
         'video_form': video_form,
-        # 'photo_form': photo_form
     })
 
 
@@ -117,30 +109,17 @@ def video_edit(request, pk):
     if video.user == request.user:
         if request.method == 'POST':
             video_form = VideoForm(request.POST, instance=video)
-            # photo_form = PhotoForm(request.POST, request.FILES)
-            # if picture_form.is_valid() and photo_form.is_valid():
             if video_form.is_valid():
                 video = video_form.save(commit=False)
                 video.user = request.user
                 video.save()
-
-                # image = picture.photo_set.all()
-                # image.delete()
-                #
-                # for f in request.FILES.getlist("photo"):
-                #     Photo.objects.create(
-                #         picture=picture,
-                #         photo=f
-                #     )
                 return redirect('video:video_detail', video.pk)
         else:
             video_form = VideoForm(instance=video)
-            # photo_form = PhotoForm()
 
         return render(request, 'video/video_edit.html', {
             'video': video,
             'video_form': video_form,
-            # 'photo_form': photo_form
         })
 
 
@@ -200,3 +179,9 @@ def comment_delete(request, video_pk, pk):
             comment.delete()
             return redirect('video:video_list')
     return render(request, 'video/comment_delete.html', {'comment': comment})
+
+
+@login_required
+def video_permission(request):
+    video = Video.objects.all()
+    return render(request, 'video/permission.html', {'video': video})

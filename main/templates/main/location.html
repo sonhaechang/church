@@ -1,0 +1,114 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}<link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron1.html" %}
+      </div>
+
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>본당소개</h3>
+          <a href="{% url 'main:church_info' %}" class="list-group-item">본당소개</a>
+          <a href="{% url 'main:history' %}" class="list-group-item">본당연혁</a>
+          <a href="{% url 'main:mass_time' %}" class="list-group-item">미사 및 성사</a>
+          <a href="{% url 'main:father_sister' %}" class="list-group-item">신부님/수녀님</a>
+          <a href="{% url 'main:location' %}" class="list-group-item active">오시는길</a>
+        </div>
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center; margin-bottom:30px;">
+        <div class="mobile-header-wrap">
+          <div class="mobile-header">
+            <h3 style="margin: auto;">본당단체</h3>
+            <ul>
+              <li><a href="{% url 'main:church_info' %}">본당소개</a></li>
+              <li><a href="{% url 'main:history' %}">본당연혁</a></li>
+              <li><a href="{% url 'main:mass_time' %}">미사 및 성사</a></li>
+              <li><a href="{% url 'main:father_sister' %}">신부님/수녀님</a></li>
+              <li><a href="{% url 'main:location' %}" class="active">오시는길</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-10 col-md-10 col-sm-12" id="content">
+        <h3>오시는길</h3>
+        <hr>
+
+        <div style="margin-top:70px;">
+
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1507.6643317666992!2d127.05690552220011!3d37.5022710553898!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca4171b69670d%3A0x133ed7678ad6ace3!2z7LKc7KO86rWQIOuMgOy5mDTrj5kg7ISx64u5!5e0!3m2!1sko!2skr!4v1537785452463" width="100%" height="320" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+          <div>
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td>
+                  <span style="margin-right:100px;"><strong>주소: </strong></span>
+                  <span>서울특별시 강남구 삼성로71길 10</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-right:75px;"><strong>전화번호: </strong></span>
+                    <span><a href="tel:02-3453-7810">02-3453-7810</a></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br>
+          <h4>업무시간</h4>
+          <br>
+
+          <div>
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <th>월</th>
+                  <td>휴무</td>
+                  <th>금</th>
+                  <td>오전 9시 ~ 오후 12시</td>
+                </tr>
+                <tr>
+                  <th rowspan="2">화</th>
+                  <td rowspan="2">오전 9시 ~ 오후 5시</td>
+                  <th rowspan="2">토</th>
+                  <td>오전 9시 ~ 오후 8시 30분 (첫주)</td>
+                </tr>
+                <tr>
+                  <td>오후 2시 ~ 오후 5시</td>
+                </tr>
+                <tr>
+                  <th>수</th>
+                  <td>오전 9시 ~ 오후 5시</td>
+                  <th>주일</th>
+                  <td>오전 7시 ~ 오후 8시</td>
+                </tr>
+                <tr>
+                  <th rowspan="2">목</th>
+                  <td rowspan="2">오전 9시 ~ 오후 5시</td>
+                  <th rowspan="2">점심시간</th>
+                  <td>평일 오후 12시 30분 ~ 1시 30분</td>
+                </tr>
+                <tr>
+                  <td>주일 오후 1시 ~ 2시</td>
+                </tr>
+              </tbody>
+            </table>
+            <hr>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

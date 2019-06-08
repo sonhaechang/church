@@ -1,0 +1,52 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% block css %}
+  <link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">
+  <link href="{% static 'css/pagination.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron3.html" %}
+      </div>
+
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        {% include "weekly/sidebar.html" %}
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center;">
+        <div class="mobile-header-wrap">
+          {% include "weekly/mobile-header.html" %}
+        </div>
+      </div>
+
+      <div class="col-lg-10 col-md-10" id="content">
+
+        <div id="web-content">
+          <h3>본당주보</h3>
+          <hr>
+        </div>
+
+        <div style="margin-top:70px;">
+
+          <form class="" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p><strong>제목:</strong></p>
+            <p>{{ weekly_form.title }}</p>
+            <p><strong>내용:</strong></p>
+            <p>{{ weekly_form.content }}</p>
+            <input type="submit" value="작성" class="btn btn-default btn-block">
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

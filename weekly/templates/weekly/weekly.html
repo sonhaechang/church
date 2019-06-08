@@ -1,5 +1,6 @@
 {% extends 'base2.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block css %}
   <link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">
@@ -7,119 +8,140 @@
 {% endblock %}
 
 {% block content %}
-
-  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
-    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
-  </div> -->
-
   <div class="container">
     <div class="row">
 
-      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
-        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron3.html" %}
       </div>
 
-      <!-- col-xs-4 col-sm-2 -->
-      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
-          <h3>본당소식</h3>
-          <!-- <a class="list-group-item" style="background:#7a0039; border:#7a0039; color:white;">본당소식</a> -->
-          <a href="{% url 'notice:notice_list' %}" class="list-group-item">공지사항</a>
-          <a href="{% url 'weekly:weekly_list' %}" class="list-group-item active">본당주보</a>
-          <a href="{% url 'schedule:schedule' %}" class="list-group-item">본당일정</a>
-          <a href="{% url 'gallery:gallery_list' %}" class="list-group-item">행사사진</a>
-        </div>
-      </div>
-        <!--/.sidebar-offcanvas-->
+      <div class="col-lg-12 col-md-12" id="web-content">
 
-      <div class="col-md-10" id="content">
-
-        <h3>본당주보</h3>
-        <hr>
-
-        <div class="input-group col-md-4">
-          <form action="" method="get">
-            {% csrf_token %}
-            <span class="input-group-btn">
-              <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
-            </span>
-            <span class="input-group-btn">
-              <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
-                  <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </span>
-          </form>
+        <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+          {% include "weekly/sidebar.html" %}
         </div>
 
-        <div style="margin-top:70px;">
+        <div class="col-lg-10 col-md-10" id="content">
+          <h3>본당주보</h3>
+          <hr>
 
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>날짜</th>
-                <th>조회수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for weekly in weekly_list %}
-                <!-- style="cursor:pointer;" -->
+          <div class="input-group col-md-4" style="float: left;">
+            <form action="" method="get">
+              {% csrf_token %}
+              <span class="input-group-btn">
+                <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
+              </span>
+              <span class="input-group-btn">
+                <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </span>
+            </form>
+          </div>
+
+          {% if user.is_authenticated and user.is_superuser %}
+            <a href="{% url 'weekly:weekly_new' %}" class="pull-right btn btn-info" style="float: left; background:#555; border-color:#555;">글쓰기</a>
+          {% endif %}
+
+          <div style="margin-top:130px;">
+
+            <table class="table table-hover">
+              <thead>
                 <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>
-                    <a href="{% url 'weekly:weekly_detail' weekly.pk %}" class="view-counter">{{ weekly.title }}
-                      {% if weekly.weeklycomment_set.all %}
-                        <small class="text-danger">[{{ weekly.weeklycomment_set.count }}]</small>
-                      {% endif %}
-                    </a>
-                  </td>
-                  <td><small>{{ weekly.user }}</small></td>
-                  <td><small>{{ weekly.updated_at }}</small></td>
-                  <td>{{ weekly.hits }}</td>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>글쓴이</th>
+                  <th>날짜</th>
+                  <th>조회수</th>
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {% for weekly in weekly_list %}
+                  <!-- style="cursor:pointer;" -->
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      <a href="{% url 'weekly:weekly_detail' weekly.pk %}" class="view-counter">{{ weekly.title }}
+                        {% if weekly.weeklycomment_set.all %}
+                          <small class="text-danger">[{{ weekly.weeklycomment_set.count }}]</small>
+                        {% endif %}
+                      </a>
+                    </td>
+                    <td><small>{{ weekly.user.last_name }}{{ weekly.user.first_name }}</small></td>
+                    <td><small>{{ weekly.updated_at }}</small></td>
+                    <td>{{ weekly.hits }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center">
+            {% include "weekly/pagination.html" %}
+          </div>
+        </div>
+      </div>
 
-          {# Pagination #}
-
-            <nav class="text-center">
-              <ul class="pagination">
-                {% if weekly_list.has_previous %}
-  		            <li><a href="?page={{ weekly_list.previous_page_number }}">&laquo;</a></li>
-                {% else %}
-  		            <li class = "disabled"><span>&laquo;</span></li>
-                {% endif %}
-
-    		        {% if weekly_list.number > 2  %}
-    		        	<li><a href="?page={{ 1 }}"> 1 </a></li>
-    		        	<li ><span>...<span class="sr-only">...</span></span></li>
-    		        {% endif %}
-    		        {% for i in page_range %}
-    		          {% if weekly_list.number == i %}
-    		            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-    		          {% else %}
-    		            <li><a href="?page={{ i }}">{{ i }}</a></li>
-    		          {% endif %}
-  		          {% endfor %}
-
-    		        {% if rweekly_list.number < max_index %}
-    		      		<li ><span>...<span class="sr-only">...</span></span></li>
-    		        	<li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
-    		        {% endif %}
-
-    		        {% if weekly_list.has_next %}
-    		            <li><a href="?page={{ weekly_list.next_page_number }}">&raquo;</a></li>
-    		        {% else %}
-    		            <li class="disabled"><span>&raquo;</span></li>
-    		        {%endif %}
-              </ul>
-            </nav>
-
+      <div id="mobile-content" class="row" style="text-align:center;">
+        <div class="mobile-header-wrap">
+          {% include "weekly/mobile-header.html" %}
         </div>
 
+        <div class="col-sm-12" style="margin-top:30px;">
+          <div class="col-sm-12">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">본당주보</th>
+                  <th style="text-align:right;">
+                    {% if user.is_authenticated and user.is_superuser %}
+                      <a href="{% url 'weekly:weekly_new' %}" style="color:#5F5F5F;">글쓰기</a>
+                    {% endif %}
+                  </th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {% for weekly in weekly_list %}
+                  <tr>
+                    <td colspan="2">
+                      <span class="pull-left" style="margin-left:15px;">
+                        <small>
+                          <i class="fas fa-user"></i>
+                          {{ weekly.user.last_name }}{{ weekly.user.first_name }}
+                        </small>
+                      </span>
+                      <span style="margin-right:75px;">
+                        <small>
+                          <span class="glyphicon glyphicon-time"></span>
+                          {{ weekly.updated_at|naturalday }}
+                        </small>
+                      </span>
+                      <span class="pull-right" style="margin-right:15px;">
+                        <small>
+                          <span class="glyphicon glyphicon-eye-open"></span>
+                          {{ weekly.hits }}
+                        </small>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <a href="{% url 'weekly:weekly_detail' weekly.pk %}" class="view-counter">
+                        {{ weekly.title|truncatechars:45 }}
+                        {% if weekly.weeklycomment_set.all %}
+                          <small class="text-danger">[{{ weekly.weeklycomment_set.count }}]</small>
+                        {% endif %}
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center col-ms-12">
+            {% include "weekly/pagination.html" %}
+          </div>
+        </div>
       </div>
 
     </div>

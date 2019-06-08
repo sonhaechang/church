@@ -1,0 +1,119 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}<link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron1.html" %}
+      </div>
+
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>본당소개</h3>
+          <a href="{% url 'main:church_info' %}" class="list-group-item">본당소개</a>
+          <a href="{% url 'main:history' %}" class="list-group-item">본당연혁</a>
+          <a href="{% url 'main:mass_time' %}" class="list-group-item active">미사 및 성사</a>
+          <a href="{% url 'main:father_sister' %}" class="list-group-item">신부님/수녀님</a>
+          <a href="{% url 'main:location' %}" class="list-group-item">오시는길</a>
+        </div>
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center; margin-bottom:30px;">
+        <div class="mobile-header-wrap">
+          <div class="mobile-header">
+            <h3 style="margin: auto;">본당단체</h3>
+            <ul>
+              <li><a href="{% url 'main:church_info' %}">본당소개</a></li>
+              <li><a href="{% url 'main:history' %}">본당연혁</a></li>
+              <li><a href="{% url 'main:mass_time' %}" class="active">미사 및 성사</a></li>
+              <li><a href="{% url 'main:father_sister' %}">신부님/수녀님</a></li>
+              <li><a href="{% url 'main:location' %}">오시는길</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-10" id="content">
+        <h3>미사 및 성사</h3>
+        <hr>
+        <div style="margin-top:70px;">
+          <div class="col-md-6">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th colspan="2"><h4>평 일 미 사</h4></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>화 요 일</td>
+                  <td>오전 10시</td>
+                </tr>
+                <tr>
+                  <td>수 요 일</td>
+                  <td>오전 10시, 오후 7시 30분</td>
+
+                </tr>
+                <tr>
+                  <td>목 요 일</td>
+                  <td>오전 10시</td>
+                </tr>
+                <tr>
+                  <td>금 요 일</td>
+                  <td>오전 10시</td>
+                </tr>
+                <tr>
+                  <td>유 아 영 세</td>
+                  <td>홀수 달 첫째 토요일 오후 5시</td>
+                </tr>
+                <tr>
+                  <td>성시간 전례</td>
+                  <td>매월 첫 목요일 오후 8시</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th colspan="2"><h4>주 일 미 사</h4></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="2">토 요 일</td>
+                  <td>첫째주 오전 10시 (신심미사)</td>
+                </tr>
+                <tr>
+                  <td>오후 4시(초등부), 7시 30분</td>
+                </tr>
+                <tr>
+                  <td rowspan="2">주 일</td>
+                  <td>오전 7시, 9시(중,고생)</td>
+                </tr>
+                <tr>
+                  <td>오전 11시(교중미사), 오후 6시(청년미사)</td>
+                </tr>
+                <tr>
+                  <td>봉 성 체</td>
+                  <td>매월 둘째 금요일 오전 10시 30분</td>
+                </tr>
+                <tr>
+                  <td>고해 성사</td>
+                  <td>평일미사, 주일미사 20분 전</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -10,4 +10,5 @@ urlpatterns = [
     re_path(r'^(?P<pk>\d+)/delete/$', views.group_delete, name='group_delete'),
     re_path(r'^comment/new/$', views.comment_new, name='comment_new'),
     re_path(r'^(?P<group_pk>\d+)/comment/(?P<pk>\d+)/delete/$', views.comment_delete, name='comment_delete'),
+    re_path(r'^permission/$', views.group_permission, name='group_permission'),
 ]

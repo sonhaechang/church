@@ -1,4 +1,4 @@
-from post.forms import SearchForm
+from main.forms import SearchForm
 
 def default(request):
     form = SearchForm()

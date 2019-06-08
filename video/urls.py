@@ -10,4 +10,5 @@ urlpatterns = [
     re_path(r'^(?P<pk>\d+)/delete/$', views.video_delete, name='video_delete'),
     re_path(r'^comment/new/$', views.comment_new, name='comment_new'),
     re_path(r'^(?P<video_pk>\d+)/comment/(?P<pk>\d+)/delete/$', views.comment_delete, name='comment_delete'),
+    re_path(r'^permission/$', views.video_permission, name='video_permission'),
 ]

@@ -1,0 +1,353 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img class="first-slide" src="{% static 'img/church-chapel.jpeg' %}" alt="First slide">
+      <div class="container">
+        <div class="carousel-caption">
+          <!-- <h1>대치4동 성당</h1>
+          <p>방문해 주셔서 감사합니다.</p> -->
+          <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p> -->
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img class="second-slide" src="{% static 'img/Daechi4dong_Catholic_church.JPG' %}" alt="Second slide">
+      <div class="container">
+        <div class="carousel-caption">
+          <!-- <h1>Another example headline.</h1>
+          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+          <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p> -->
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img class="third-slide" src="{% static 'img/francis.jpg' %}" alt="Third slide">
+      <div class="container">
+        <div class="carousel-caption">
+          <!-- <h1>One more for good measure.</h1>
+          <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+          <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div><!-- /.carousel -->
+
+<!-- web-container -->
+<div class="container web-container">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>공지사항</strong></h4>
+        {% for notice in notice_list|slice:":5" %}
+          <ul style="padding-left:0px; line-height: 1;">
+            <li style="list-style:none;">
+              <a href="{% url 'notice:notice_detail' notice.pk %}" class="view-counter" style="color:#5D5D5D;">
+                - {{ notice.title|truncatechars:10 }}
+                <small><span class="glyphicon glyphicon-time" style="margin-left:45px;"></span> {{ notice.updated_at|naturalday }}</small>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <a href="{% url 'notice:notice_list' %}">
+          <small>
+            <p style="color:gray;">
+              더보기 ...
+              <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
+            </p>
+          </small>
+        </a>
+
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>본당주보</strong></h4>
+        {% for weekly in weekly_list|slice:":5" %}
+          <ul style="padding-left:0px; line-height: 1;">
+            <li style="list-style:none;">
+              <a href="{% url 'weekly:weekly_detail' weekly.pk %}" class="view-counter" style="color:#5D5D5D;">
+                - {{ weekly.title|truncatechars:15 }}
+                <small><span class="glyphicon glyphicon-time" style="margin-left:45px;"></span> {{ weekly.updated_at|naturalday }}</small>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <a href="{% url 'weekly:weekly_list' %}">
+          <small>
+            <p style="color:gray;">
+              더보기 ...
+              <!-- <span class="glyphicon glyphicon-play" style="color:gray;"></span> -->
+            </p>
+          </small>
+        </a>
+
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>본당일정</strong></h4>
+        <a href="{% url 'schedule:schedule' %}">
+          <img src="{% static 'img/index_calendar.png' %}" alt="">
+        </a>
+
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>매일미사</strong></h4>
+        <img src="{% static 'img/logo_07.png' %}" alt="" style="width:200px;">
+        <p>굿뉴스에서 제공하는</p>
+        <p>
+          <strong>
+            <a href="http://info.catholic.or.kr/missa/" target="_blank">
+              "오늘의 미사"
+            </a>
+          </strong> 를 보실 수 있습니다.
+        </p>
+      </div>
+
+    </div>
+
+    <br/>
+
+    <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 30px; margin-bottom: 30px;">
+
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>행사사진</strong></h4>
+
+        {% for gallery in gallery_list|slice:":3" %}
+          <ul style="list-style:none; padding-left:0px;">
+            <li style="float: left; margin-right:30px;">
+              {% if gallery.thumbnail_set.all %}
+                {% for p in gallery.thumbnail_set.all|slice:":1" %}
+                  <img src="https://daechi4.s3.ap-northeast-2.amazonaws.com/media{{ p }}" alt="..." style="width:150px; height:100px;">
+                {% endfor %}
+              {% endif %}
+
+              <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:#5D5D5D;" role="button">
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ gallery.title|truncatechars:18 }}</strong></p>
+                <p><small><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small></p>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <div class="col-md-12">
+          <a href="{% url 'gallery:gallery_list' %}">
+            <small>
+              <p style="color:gray;">더보기 ...</p>
+            </small>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>우리들의 사진</strong></h4>
+
+        {% for picture in picture_list|slice:":3" %}
+          <ul style="list-style:none; padding-left:0px;">
+            <li style="float: left; margin-right:30px;">
+              {% if picture.thumbnail_set.all %}
+                {% for p in picture.thumbnail_set.all|slice:":1" %}
+                  <img src="https://daechi4.s3.ap-northeast-2.amazonaws.com/media{{ p }}" alt="..." style="width:150px; height:100px;">
+                {% endfor %}
+              {% endif %}
+
+              <a href="{% url 'picture:picture_detail' picture.pk %}" style="color:#5D5D5D;" role="button">
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ picture.title|truncatechars:18 }}</strong></p>
+                <p><small><span class="glyphicon glyphicon-time"></span> {{ picture.updated_at|naturalday }}</small></p>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <div class="col-md-12">
+            <a href="{% url 'picture:picture_list' %}">
+              <small>
+                <p style="color:gray;">더보기 ...</p>
+              </small>
+            </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 30px; margin-bottom: 30px;">
+
+      <div class="col-md-6 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>미사시간 안내</strong></h4>
+        <img src="{% static 'img/schedule_540.png' %}" alt="" style="width:100%; height:125px;">
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong >업무시간</strong></h4>
+        <img src="{% static 'img/office_540.png' %}" alt="" style="width:100%; height:125px;">
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- mobile-container -->
+<div class="container mobile-container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="col-sm-12 mobile-checkerboard" style="margin-bottom:5px;">
+        <div class="col-sm-6 mobile-icon-wrap">
+          <div class="mobile-icon">
+            <a href="{% url 'main:location' %}">
+              <p style="margin-top:20px;">
+                <i class="fas fa-map-marked-alt fa-2x"></i>
+              </p>
+              <h3 style="margin-top:10px;">오시는길</h3>
+              <p>바로가기</p>
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-6 mobile-icon-wrap">
+          <div class="mobile-icon">
+            <a href="{% url 'main:mass_time' %}">
+              <p style="margin-top:20px;">
+                <i class="far fa-clock fa-2x"></i>
+              </p>
+              <h3 style="margin-top:10px;">미사시간</h3>
+              <p>바로가기</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 mobile-checkerboard">
+        <div class="col-sm-6 mobile-icon-wrap">
+          <div class="mobile-icon">
+            <a href="{% url 'weekly:weekly_list' %}">
+              <p style="margin-top:20px;">
+                <i class="fas fa-bible fa-2x"></i>
+              </p>
+              <h3 style="margin-top:10px;">본당주보</h3>
+              <p>바로가기</p>
+            </a>
+          </div>
+        </div>
+        <div class="col-sm-6 mobile-icon-wrap" >
+          <div class="mobile-icon">
+            <a href="{% url 'schedule:schedule' %}">
+              <p style="margin-top:20px;">
+                <i class="far fa-calendar-alt fa-2x"></i>
+              </p>
+              <h3>본당일정</h3>
+              <p>바로가기</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12" style="margin-top:30px;">
+      <div class="col-sm-12">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>공지사항</strong></h4>
+        {% for notice in notice_list|slice:":5" %}
+          <ul style="padding-left:0px; line-height: 1;">
+            <li style="list-style:none;">
+              <a href="{% url 'notice:notice_detail' notice.pk %}" class="view-counter" style="color:#5D5D5D;">
+                - {{ notice.title|truncatechars:10 }}
+                <small><span class="glyphicon glyphicon-time" style="margin-left:45px;"></span> {{ notice.updated_at|naturalday }}</small>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <a href="{% url 'notice:notice_list' %}">
+          <small>
+            <p style="color:gray;">
+              더보기 ...
+            </p>
+          </small>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-sm-12">
+      <div class="col-sm-6" style="float: left; width: 50%;">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>행사사진</strong></h4>
+
+        {% for gallery in gallery_list|slice:":1" %}
+          <ul style="list-style:none; padding-left:0px;">
+            <li style="float: left; margin-right:30px;">
+              {% if gallery.thumbnail_set.all %}
+                {% for p in gallery.thumbnail_set.all|slice:":1" %}
+                  <img src="https://daechi4.s3.ap-northeast-2.amazonaws.com/media{{ p }}" alt="..." style="width:150px; height:100px;">
+                {% endfor %}
+              {% endif %}
+
+              <a href="{% url 'gallery:gallery_detail' gallery.pk %}" style="color:#5D5D5D;" role="button">
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ gallery.title|truncatechars:18 }}</strong></p>
+                <p><small><span class="glyphicon glyphicon-time"></span> {{ gallery.updated_at|naturalday }}</small></p>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <div class="col-md-12">
+          <a href="{% url 'gallery:gallery_list' %}">
+            <small>
+              <p style="color:gray;">더보기 ...</p>
+            </small>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-sm-6" style="float: left; width: 50%;">
+        <h4 style="margin-bottom:20px; border-bottom: 1.5px solid brown; padding-bottom:5px;"><strong>우리들의 사진</strong></h4>
+
+        {% for picture in picture_list|slice:":1" %}
+          <ul style="list-style:none; padding-left:0px;">
+            <li style="float: left; margin-right:30px;">
+              {% if picture.thumbnail_set.all %}
+                {% for p in picture.thumbnail_set.all|slice:":1" %}
+                  <img src="https://daechi4.s3.ap-northeast-2.amazonaws.com/media{{ p }}" alt="..." style="width:150px; height:100px;">
+                {% endfor %}
+              {% endif %}
+
+              <a href="{% url 'picture:picture_detail' picture.pk %}" style="color:#5D5D5D;" role="button">
+                <p style="margin-top:5px; margin-bottom:0px;"><strong>{{ picture.title|truncatechars:18 }}</strong></p>
+                <p><small><span class="glyphicon glyphicon-time"></span> {{ picture.updated_at|naturalday }}</small></p>
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+
+        <div class="col-md-12">
+            <a href="{% url 'picture:picture_list' %}">
+              <small>
+                <p style="color:gray;">더보기 ...</p>
+              </small>
+            </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

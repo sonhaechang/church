@@ -1,11 +1,12 @@
 import re
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
-from picture.models import Picture, Photo, PictureComment
-from picture.forms import PictureForm, PhotoForm, CommentForm
+from picture.models import Picture, PictureComment
+from picture.forms import PictureForm, CommentForm
 
 # Create your views here.
 
@@ -86,30 +87,20 @@ def picture_detail(request, pk):
 
 
 @login_required
+@permission_required('picture.add_picture', login_url=reverse_lazy('picture:picture_permission'))
 def picture_new(request):
     if request.method == 'POST':
         picture_form = PictureForm(request.POST)
-        photo_form = PhotoForm(request.POST, request.FILES)
-        # if picture_form.is_valid() and photo_form.is_valid():
         if picture_form.is_valid():
             picture = picture_form.save(commit=False)
             picture.user = request.user
             picture.save()
-            picture.photo_save()
-
-            # for f in request.FILES.getlist("photo"):
-            #     Photo.objects.create(
-            #         picture=picture,
-            #         photo=f
-            #     )
             return redirect('picture:picture_list')
     else:
         picture_form = PictureForm()
-        # photo_form = PhotoForm()
 
     return render(request, 'picture/picture_new.html', {
         'picture_form': picture_form,
-        # 'photo_form': photo_form
     })
 
 
@@ -120,35 +111,17 @@ def picture_edit(request, pk):
     if picture.user == request.user:
         if request.method == 'POST':
             picture_form = PictureForm(request.POST, instance=picture)
-            # photo_form = PhotoForm(request.POST, request.FILES)
-            # if picture_form.is_valid() and photo_form.is_valid():
             if picture_form.is_valid():
                 picture = picture_form.save(commit=False)
                 picture.user = request.user
                 picture.save()
-                thumbnail = picture.thumbnail_set.all()
-                thumbnail.delete()
-                picture.photo_save()
-
-
-
-                # image = picture.photo_set.all()
-                # image.delete()
-                #
-                # for f in request.FILES.getlist("photo"):
-                #     Photo.objects.create(
-                #         picture=picture,
-                #         photo=f
-                #     )
                 return redirect('picture:picture_detail', picture.pk)
         else:
             picture_form = PictureForm(instance=picture)
-            # photo_form = PhotoForm()
 
         return render(request, 'picture/picture_edit.html', {
             'picture': picture,
             'picture_form': picture_form,
-            # 'photo_form': photo_form
         })
 
 
@@ -207,4 +180,10 @@ def comment_delete(request, picture_pk, pk):
         if comment.user == request.user:
             comment.delete()
             return redirect('picture:picture_list')
-    return render(request, 'gallery/comment_delete.html', {'comment': comment})
+    return render(request, 'picture/comment_delete.html', {'comment': comment})
+
+
+@login_required
+def picture_permission(request):
+    picture = Picture.objects.all()
+    return render(request, 'picture/permission.html', {'picture': picture})

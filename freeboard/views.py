@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from freeboard.models import Freeboard, FreeboardComment
 from freeboard.forms import FreeboardForm, CommentForm
@@ -82,6 +83,7 @@ def freeboard_detail(request, pk):
 
 
 @login_required
+@permission_required('freeboard.add_freeboard', login_url=reverse_lazy('freeboard:fboard_permission'))
 def freeboard_new(request):
     if request.method == 'POST':
         form = FreeboardForm(request.POST, request.FILES)
@@ -175,3 +177,9 @@ def comment_delete(request, fboard_pk, pk):
             comment.delete()
             return redirect('freeboard:freeboard_list')
     return render(request, 'freeboard/comment_delete.html', {'comment': comment})
+
+
+@login_required
+def fboard_permission(request):
+    fboard = Freeboard.objects.all()
+    return render(request, 'freeboard/permission.html', {'fboard': fboard})

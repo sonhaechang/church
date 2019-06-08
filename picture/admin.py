@@ -1,13 +1,10 @@
 from django.contrib import admin
-from picture.models import Picture, Photo, Thumbnail, PictureComment
+from picture.models import Picture, Thumbnail, PictureComment
 from django_summernote.admin import SummernoteModelAdmin
 # admin.site.register(summer_model)
 
 # Register your models here.
 
-# class PictureInline(admin.TabularInline):
-#     model = Photo
-#     raw_id_fields = ['picture']
 
 @admin.register(Picture)
 class Picture(SummernoteModelAdmin):
@@ -17,12 +14,6 @@ class Picture(SummernoteModelAdmin):
     list_filter = ['created_at', 'updated_at', 'user']
     search_fields = ['content', 'created_at']
     ordering = ['-updated_at', '-created_at']
-    # inlines = [PictureInline]
-
-
-# @admin.register(Photo)
-# class Photo(admin.ModelAdmin):
-#     list_display = ['id', 'picture', 'photo']
 
 @admin.register(Thumbnail)
 class Thumbnail(admin.ModelAdmin):

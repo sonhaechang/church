@@ -2,9 +2,10 @@ import os
 from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from notice.models import Notice, NoticeComment
-from notice.forms import CommentForm
+from notice.forms import NoticeForm, CommentForm
 
 # Create your views here.
 def notice_list(request):
@@ -82,38 +83,53 @@ def notice_detail(request, pk):
     })
 
 
-# @login_required
-# def comment_new(request, notice_pk):
-#     notice = get_object_or_404(Notice, pk=notice_pk)
-#
-#     if request.method == 'POST':
-#         form = CommentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             parent_obj = None
-#             try:
-#                 parent_id = int(request.POST.get('parent_id'))
-#                 print(parent_id)
-#
-#             except:
-#                 parent_id = None
-#
-#             if parent_id:
-#                 parent_obj = NoticeComment.objects.get(id=parent_id)
-#
-#                 if parent_obj:
-#                     replay_comment = form.save(commit=False)
-#                     replay_comment.parent = parent_obj
-#
-#             comment = form.save(commit=False)
-#             comment.notice = notice
-#             comment.user = request.user
-#             comment.save()
-#             return redirect('notice:notice_detail', notice.pk)
-#     else:
-#         form = CommentForm()
-#     return render(request, 'blog/comment_form.html', {
-#         'form': form,
-#     })
+@login_required
+def notice_new(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            notice_form = NoticeForm(request.POST)
+            if notice_form.is_valid():
+                notice = notice_form.save(commit=False)
+                notice.user = request.user
+                notice.save()
+                return redirect('notice:notice_list')
+        else:
+            notice_form = NoticeForm()
+
+        return render(request, 'notice/notice_new.html', {
+            'notice_form': notice_form,
+        })
+
+
+@login_required
+def notice_edit(request, pk):
+    notice = get_object_or_404(Notice, pk=pk)
+
+    if notice.user == request.user:
+        if request.method == 'POST':
+            notice_form = NoticeForm(request.POST, instance=notice)
+            if notice_form.is_valid():
+                notice = notice_form.save(commit=False)
+                notice.user = request.user
+                notice.save()
+                return redirect('notice:notice_detail', notice.pk)
+        else:
+            notice_form = NoticeForm(instance=notice)
+
+        return render(request, 'notice/notice_edit.html', {
+            'notice': notice,
+            'notice_form': notice_form,
+        })
+
+
+@login_required
+def notice_delete(request, pk):
+    notice = get_object_or_404(Notice, pk=pk)
+    if notice.user == request.user:
+        if request.method == 'POST':
+            notice.delete()
+            messages.success(request, '포스팅을 삭제했습니다.')
+            return redirect('notice:notice_list')
 
 
 @login_required

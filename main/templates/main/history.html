@@ -1,0 +1,223 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block css %}<link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron1.html" %}
+      </div>
+
+      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+          <h3>본당연혁</h3>
+          <a href="{% url 'main:church_info' %}" class="list-group-item">본당소개</a>
+          <a href="{% url 'main:history' %}" class="list-group-item active">본당연혁</a>
+          <a href="{% url 'main:mass_time' %}" class="list-group-item">미사 및 성사</a>
+          <a href="{% url 'main:father_sister' %}" class="list-group-item">신부님/수녀님</a>
+          <a href="{% url 'main:location' %}" class="list-group-item">오시는길</a>
+        </div>
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center; margin-bottom:30px;">
+        <div class="mobile-header-wrap">
+          <div class="mobile-header">
+            <h3 style="margin: auto;">본당단체</h3>
+            <ul>
+              <li><a href="{% url 'main:church_info' %}">본당소개</a></li>
+              <li><a href="{% url 'main:history' %}" class="active">본당연혁</a></li>
+              <li><a href="{% url 'main:mass_time' %}">미사 및 성사</a></li>
+              <li><a href="{% url 'main:father_sister' %}">신부님/수녀님</a></li>
+              <li><a href="{% url 'main:location' %}">오시는길</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-10" id="content">
+
+
+        <h3>본당연혁<small>(간략하게 작성)</small></h3>
+        <hr>
+
+        <div style="margin-top:70px;">
+
+          <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover history">
+              <thead>
+                <tr>
+                  <th>기간</th>
+                  <th>행사명</th>
+                  <th>내용</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1999-09-17</td>
+                  <td>대치4동 신설</td>
+                  <td>대치4동 성당 신설 (대치동, 대치2동 분할)</td>
+                </tr>
+                <tr>
+                  <td>1999-10-01</td>
+                  <td>초대 양장욱(베드로)신부님 부임</td>
+                  <td>
+                    대치4동 본당 첫 주임신부로 오금동 본당 부주임신부였던 양장욱 베드로 신부가 부임함.
+                    비가 오는 가운데 많은 신자들과 대치2동 보좌신부와 수녀들이 맞이하였으며, 신축부지
+                    축성과 사제관 축성을 하였음. 참석한 신자들과 점심.
+                  </td>
+                </tr>
+                <tr>
+                  <td>1999-10-03</td>
+                  <td>대치2동 교적인수(364세대, 남464, 여591=계1.055명)</td>
+                  <td>
+                    대치2동본당 교적인수 346세대, 남464명, 여591명 계1,055명인수하였음. 행불교적
+                    (49세대 남53명, 여63명)포함됨
+                  </td>
+                </tr>
+                <tr>
+                  <td>1999-10-08</td>
+                  <td>대치동 본당 교적인수(525세대, 남724, 여902 = 계1,62)</td>
+                  <td>
+                    대치동 본단 교적인수 (525세대 남724명, 여902명 총신자수1,626명)인수함
+                  </td>
+                </tr>
+                <tr>
+                  <td>1999-10-10</td>
+                  <td>대치4동 본당 첫 주일미사 봉헌</td>
+                  <td>
+                    본당 첫 주일미사봉헌 (83명 참석)
+                  </td>
+                </tr>
+                <tr>
+                  <td>1999-10-19 ~ 2019-10-19</td>
+                  <td>임시성당 계약(대치4동912-12호)지하 50평</td>
+                  <td>
+                    대치4동 912-12호 자하50평 월 1,000,000원 계약 체결
+                  </td>
+                </tr>
+                <tr>
+                  <td>2000-07-22</td>
+                  <td>성당 사용승인서 (준공)취득</td>
+                  <td>
+                    본당 사용승인서(준공)취득
+                  </td>
+                </tr>
+                <tr>
+                  <td>2000-08-31</td>
+                  <td>본당 도지합병 및 지목변경(912-16호, 종교용지로 변경)</td>
+                  <td>
+                    본당 토지912-16, 26, 27호 합병 912-16호로 지목대지에서 종교용지로 변경
+                  </td>
+                </tr>
+                <tr>
+                  <td>2001-11-25</td>
+                  <td>성당 봉헌식</td>
+                  <td>
+                    성전 봉헌식 (정진석, 니꼴라오)대주교, 최창화 사무처장, 고찬근 비서신부,
+                    이철희 신부, 라병욱 신부, 양상룡 신부님.
+                  </td>
+                </tr>
+                <tr>
+                  <td>2004-03-02</td>
+                  <td>제2대 배도동(대건안드레아)본당 신부님 부임</td>
+                  <td>
+                    제2대 배도동(대건안드레아)본당 신부님 부임
+                  </td>
+                </tr>
+                <tr>
+                  <td>2004-07-02</td>
+                  <td>은성제(요셉) 부제 사제서품</td>
+                  <td>
+                    본당 은요셉부제님 사제서품
+                  </td>
+                </tr>
+                <tr>
+                  <td>2004-08-11</td>
+                  <td>대치3동 성당 교회건물 계약</td>
+                  <td>
+                    46억 계약
+                  </td>
+                </tr>
+                <tr>
+                  <td>2004-09-09</td>
+                  <td>대치3동 성당 신설명령</td>
+                  <td>
+                    대치3동 신설명령(주임신부 황경원)
+                  </td>
+                </tr>
+                <tr>
+                  <td>2004-10-28</td>
+                  <td>대치3동 교적 전출</td>
+                  <td>
+                    대치3동 관할 신자 교적 전출
+                  </td>
+                </tr>
+                <tr>
+                  <td>2007-06-28</td>
+                  <td>사목방문</td>
+                  <td>
+                    본당 사목방문 : 김운회 교주님, 최준웅 신부님, 김민수 신부님, 남상근 신부님, 비서신부님
+                  </td>
+                </tr>
+                <tr>
+                  <td>2007-09-13 ~ 2007-09-14</td>
+                  <td>본당 행정 및 재무감사</td>
+                  <td>
+                    본당 행정 및 재무감사 : 교구 행정지원과 황차장 외 1인
+                  </td>
+                </tr>
+                <tr>
+                  <td>2009-02-17</td>
+                  <td>제3대 홍사영(바오로)신부님 부임</td>
+                  <td>
+                    제3대 홍사영(바오로)신부님 부임
+                  </td>
+                </tr>
+                <tr>
+                  <td>2012-07-13</td>
+                  <td>본당행적점검</td>
+                  <td>
+                    본당 교구 행정점검 실시 : 황차장외 3명 오전 10시 ~ 오후 5시
+                  </td>
+                </tr>
+                <tr>
+                  <td>2012-10-02</td>
+                  <td>본당사목방문</td>
+                  <td>
+                    본당 사목방문 : 황인국 몬시뇰, 홍기범 신부, 주경수 신부, 김철호 신부, 박상수 신부, 정규현 지구장신부
+                   </td>
+                </tr>
+                <tr>
+                  <td>2012-02-18</td>
+                  <td>제4대 용하성(사도 안드레아)신부님 부임</td>
+                  <td>
+                    제4대 용하성(사도 안드레아)신부님 부임
+                  </td>
+                </tr>
+                <tr>
+                  <td>2017-07-03</td>
+                  <td>용하성(사도 안드레아)신부님 은경축 특별미사</td>
+                  <td>
+                    용하성(사도 안드레아)신부님 은경축 특별미사 및 축하연
+                  </td>
+                </tr>
+                <tr>
+                  <td>2019-02-12</td>
+                  <td>제5대 나오진(사도요한)본당 신부님 부임</td>
+                  <td>
+                    제5대 나오진(사도요한)본당 신부님 부임
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

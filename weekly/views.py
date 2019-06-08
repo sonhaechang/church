@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from weekly.models import Weekly, WeeklyComment
-from weekly.forms import CommentForm
+from weekly.forms import WeeklyForm, CommentForm
 # from django.views.generic import ListView
 
 # Create your views here.
@@ -79,6 +80,55 @@ def weekly_detail(request, pk):
         'comment_count': comment_count,
         'comments': comments
     })
+
+
+@login_required
+def weekly_new(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            weekly_form = WeeklyForm(request.POST)
+            if weekly_form.is_valid():
+                weekly = weekly_form.save(commit=False)
+                weekly.user = request.user
+                weekly.save()
+                return redirect('weekly:weekly_list')
+        else:
+            weekly_form = WeeklyForm()
+
+        return render(request, 'weekly/weekly_new.html', {
+            'weekly_form': weekly_form,
+        })
+
+
+@login_required
+def weekly_edit(request, pk):
+    weekly = get_object_or_404(Weekly, pk=pk)
+
+    if weekly.user == request.user:
+        if request.method == 'POST':
+            weekly_form = WeeklyForm(request.POST, instance=weekly)
+            if weekly_form.is_valid():
+                weekly = weekly_form.save(commit=False)
+                weekly.user = request.user
+                weekly.save()
+                return redirect('weekly:weekly_detail', weekly.pk)
+        else:
+            weekly_form = WeeklyForm(instance=weekly)
+
+        return render(request, 'weekly/weekly_edit.html', {
+            'weekly': weekly,
+            'weekly_form': weekly_form,
+        })
+
+
+@login_required
+def weekly_delete(request, pk):
+    weekly = get_object_or_404(Weekly, pk=pk)
+    if weekly.user == request.user:
+        if request.method == 'POST':
+            weekly.delete()
+            messages.success(request, '포스팅을 삭제했습니다.')
+            return redirect('weekly:weekly_list')
 
 
 @login_required

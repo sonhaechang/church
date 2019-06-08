@@ -1,8 +1,8 @@
-import os
-from datetime import datetime
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from QnA.models import QnA, QnAComment
 from QnA.forms import QnAForm, CommentForm
@@ -84,6 +84,7 @@ def QnA_detail(request, pk):
 
 
 @login_required
+@permission_required('QnA.add_qna', login_url=reverse_lazy('picture:picture_permission'))
 def QnA_new(request):
     if request.method == 'POST':
         form = QnAForm(request.POST, request.FILES)
@@ -176,3 +177,9 @@ def comment_delete(request, qna_pk, pk):
             comment.delete()
             return redirect('QnA:QnA_list')
     return render(request, 'QnA/comment_delete.html', {'comment': comment})
+
+
+@login_required
+def QnA_permission(request):
+    qna = QnA.objects.all()
+    return render(request, 'QnA/permission.html', {'qna': qna})

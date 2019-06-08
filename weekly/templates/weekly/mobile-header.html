@@ -1,0 +1,10 @@
+<div class="mobile-header">
+  <h3 style="margin: auto;">본당소식</h3>
+  <ul>
+    <li><a href="{% url 'notice:notice_list' %}">공지사항</a></li>
+    <li><a href="{% url 'weekly:weekly_list' %}" class="active">본당주보</a></li>
+    <li><a href="{% url 'schedule:schedule' %}">본당일정</a></li>
+    <li><a href="{% url 'gallery:gallery_list' %}">행사사진</a></li>
+    <li><a href="{% url 'flower:flower_list' %}">제대꽃</a></li>
+  </ul>
+</div>

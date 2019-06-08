@@ -1,5 +1,5 @@
 from django import forms
-from picture.models import Picture, Photo, PictureComment
+from picture.models import Picture, PictureComment
 from django.utils.translation import gettext_lazy as _
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
@@ -20,18 +20,6 @@ class PictureForm(forms.ModelForm):
     class Meta:
         model = Picture
         fields = ['title', 'content']
-
-
-class PhotoForm(forms.ModelForm):
-    photo = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['photo'].label = _('사진')
-
-    class Meta:
-        model = Photo
-        fields = ['photo']
 
 
 class CommentForm(forms.ModelForm):

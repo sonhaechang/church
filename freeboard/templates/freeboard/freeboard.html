@@ -1,5 +1,6 @@
 {% extends 'base2.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block css %}
   <link href="{% static 'css/offcanvass.css' %}" rel="stylesheet">
@@ -7,121 +8,141 @@
 {% endblock %}
 
 {% block content %}
-
-  <!-- <div class="jumbotron" style="margin-top: 20px; padding:0px;">
-    <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
-  </div> -->
-
   <div class="container">
     <div class="row">
 
-      <div class="jumbotron" style="margin-top: 15px; padding:0px;">
-        <img class="" src="{% static 'img/main_image.jpg' %}" alt="" style="width: 100%; height:300px;">
+      <div id="jumbotron">
+        {% include "jumbotron/jumbotron4.html" %}
       </div>
 
-      <!-- col-xs-4 col-sm-2 -->
-      <div class="col-md-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
-          <h3>참여마당</h3>
-          <a href="{% url 'picture:picture_list' %}" class="list-group-item">우리들 사진</a>
-          <a href="{% url 'video:video_list' %}" class="list-group-item">우리들 영상</a>
-          <a href="{% url 'QnA:QnA_list' %}" class="list-group-item">묻고 답하기</a>
-          <a href="{% url 'freeboard:freeboard_list' %}" class="list-group-item active">자유게시판</a>
-        </div>
-      </div>
-        <!--/.sidebar-offcanvas-->
+      <div class="col-lg-12 col-md-12" id="web-content">
 
-      <!-- <div class="col-md-10" style="border: 1px solid #f4f4f4"> -->
-      <div class="col-md-10" id="content">
-
-        <h3>자유게시판</h3>
-        <hr>
-
-        <div class="input-group col-md-4" style="float: left;">
-          <form action="" method="get">
-            {% csrf_token %}
-            <span class="input-group-btn">
-              <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
-            </span>
-            <span class="input-group-btn">
-              <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
-                  <i class="glyphicon glyphicon-search"></i>
-              </button>
-            </span>
-          </form>
+        <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+          {% include "freeboard/sidebar.html" %}
         </div>
 
-        {% if user.is_authenticated %}
-          <a href="{% url 'freeboard:freeboard_new' %}" class="pull-right btn btn-info" style="float: left; background:#555; border-color:#555;">글쓰기</a>
-        {% endif %}
+        <div class="col-md-10" id="content">
 
-        <div style="margin-top:130px;">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>날짜</th>
-                <th>조회수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for fboard in fboard_list %}
-                <!-- style="cursor:pointer;" -->
+          <h3>자유게시판</h3>
+          <hr>
+
+          <div class="input-group col-md-4" style="float: left;">
+            <form action="" method="get">
+              {% csrf_token %}
+              <span class="input-group-btn">
+                <input type="text" class="form-control input-md" placeholder="검색..." name="q" value="{{ q }}" />
+              </span>
+              <span class="input-group-btn">
+                <button class="btn btn-info btn-md notice-search" type="submit" style="background:#555; border-color:#555;">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </span>
+            </form>
+          </div>
+
+          {% if user.is_authenticated %}
+            <a href="{% url 'freeboard:freeboard_new' %}" class="pull-right btn btn-info" style="float: left; background:#555; border-color:#555;">글쓰기</a>
+          {% endif %}
+
+          <div style="margin-top:130px;">
+            <table class="table table-hover">
+              <thead>
                 <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>
-                    <a href="{% url 'freeboard:freeboard_detail' fboard.pk %}" class="view-counter">{{ fboard.title }}
-                      {% if fboard.freeboardcomment_set.all %}
-                        <small class="text-danger">[{{ fboard.freeboardcomment_set.count }}]</small>
-                      {% endif %}
-                    </a>
-                  </td>
-                  <td><small>{{ fboard.user.last_name }}{{ fboard.user.first_name }}</small></td>
-                  <td><small>{{ fboard.updated_at }}</small></td>
-                  <td>{{ fboard.hits }}</td>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>글쓴이</th>
+                  <th>날짜</th>
+                  <th>조회수</th>
                 </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {% for fboard in fboard_list %}
+                  <!-- style="cursor:pointer;" -->
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      <a href="{% url 'freeboard:freeboard_detail' fboard.pk %}" class="view-counter">{{ fboard.title }}
+                        {% if fboard.freeboardcomment_set.all %}
+                          <small class="text-danger">[{{ fboard.freeboardcomment_set.count }}]</small>
+                        {% endif %}
+                      </a>
+                    </td>
+                    <td><small>{{ fboard.user.last_name }}{{ fboard.user.first_name }}</small></td>
+                    <td><small>{{ fboard.updated_at }}</small></td>
+                    <td>{{ fboard.hits }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="text-center">
+            {% include "freeboard/pagination.html" %}
+          </div>
+        </div>
+      </div>
+
+      <div id="mobile-content" class="row" style="text-align:center;">
+        <div class="mobile-header-wrap">
+          {% include "freeboard/mobile-header.html" %}
         </div>
 
-        {# Pagination #}
+        <div class="col-sm-12" style="margin-top:30px;">
+          <div class="col-sm-12">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">자유게시판</th>
+                  <th style="text-align:right;">
+                    {% if user.is_authenticated %}
+                      <a href="{% url 'freeboard:freeboard_new' %}" style="color:#5F5F5F;">글쓰기</a>
+                    {% endif %}
+                  </th>
 
-          <nav class="text-center">
-            <ul class="pagination">
-              {% if fboard_list.has_previous %}
-		            <li><a href="?page={{ fboard_list.previous_page_number }}">&laquo;</a></li>
-              {% else %}
-		            <li class = "disabled"><span>&laquo;</span></li>
-              {% endif %}
-
-  		        {% if fboard_list.number > 2  %}
-  		        	<li><a href="?page={{ 1 }}"> 1 </a></li>
-  		        	<li ><span>...<span class="sr-only">...</span></span></li>
-  		        {% endif %}
-  		        {% for i in page_range %}
-  		          {% if fboard_list.number == i %}
-  		            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-  		          {% else %}
-  		            <li><a href="?page={{ i }}">{{ i }}</a></li>
-  		          {% endif %}
-		          {% endfor %}
-
-  		        {% if fboard_list.number < max_index %}
-  		      		<li ><span>...<span class="sr-only">...</span></span></li>
-  		        	<li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
-  		        {% endif %}
-
-  		        {% if fboard_list.has_next %}
-  		            <li><a href="?page={{ fboard_list.next_page_number }}">&raquo;</a></li>
-  		        {% else %}
-  		            <li class="disabled"><span>&raquo;</span></li>
-  		        {%endif %}
-            </ul>
-          </nav>
-
+                </tr>
+              </thead>
+              <tbody>
+                {% for fboard in fboard_list %}
+                  <tr>
+                    <td colspan="2">
+                      <span class="pull-left" style="margin-left:15px;">
+                        <small>
+                          <i class="fas fa-user"></i>
+                          {{ fboard.user.last_name }}{{ fboard.user.first_name }}
+                        </small>
+                      </span>
+                      <span style="margin-right:75px;">
+                        <small>
+                          <span class="glyphicon glyphicon-time"></span>
+                          {{ fboard.updated_at|naturalday }}
+                        </small>
+                      </span>
+                      <span class="pull-right" style="margin-right:15px;">
+                        <small>
+                          <span class="glyphicon glyphicon-eye-open"></span>
+                          {{ fboard.hits }}
+                        </small>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <a href="{% url 'freeboard:freeboard_detail' freeboard.pk %}" class="view-counter">
+                        {{ fboard.title|truncatechars:45 }}
+                        {% if fboard.fboardcomment_set.all %}
+                          <small class="text-danger">[{{ fboard.fboardcomment_set.count }}]</small>
+                        {% endif %}
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center">
+            {% include "freeboard/pagination.html" %}
+          </div>
+        </div>
       </div>
 
     </div>

@@ -10,4 +10,5 @@ urlpatterns = [
     re_path(r'^(?P<pk>\d+)/delete/$', views.freeboard_delete, name='freeboard_delete'),
     re_path(r'^comment/new/$', views.comment_new, name='comment_new'),
     re_path(r'^(?P<fboard_pk>\d+)/comment/(?P<pk>\d+)/delete/$', views.comment_delete, name='comment_delete'),
+    re_path(r'^permission/$', views.fboard_permission, name='fboard_permission'),
 ]
